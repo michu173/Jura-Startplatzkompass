@@ -21,3 +21,7 @@ Diese Version ist funktional identisch mit dem v2-Paket mit Unterordnern. Ledigl
 **Datenpflege:** `startplaetze.json` ist die einzige Datenquelle für beide Ansichten. 29 Startplatz-Einträge und 30 Startpositionen.
 
 **Hinweis:** Der Kartenhintergrund benötigt eine Internetverbindung; die HTML-Dateien müssen über GitHub Pages/Webserver und nicht lokal per `file://` geöffnet werden.
+
+## Pflege der Website
+
+Die acht Dateien wurden für GitHub Pages geprüft. `startplaetze.json` ist die gemeinsame Datenquelle für Startplatzkompass und Karte. Änderungen an Beschreibungen, Startplätzen und Wetterangaben sollen dort erfolgen, damit beide Ansichten synchron bleiben.
