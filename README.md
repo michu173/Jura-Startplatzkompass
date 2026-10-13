@@ -1,27 +1,23 @@
-# Jura Startplatzkompass v2
+# Jura Startplatzkompass v2 – iPhone-Einzeldateien
 
-Statische Website für GitHub Pages. **Beide Seiten laden dieselbe zentrale Datei** `daten/startplaetze.json`. Dort sind alle 29 Startplatz-Einträge, 30 Startkoordinaten, ursprünglichen Quellfelder, aggregierten Abschnitte sowie die Wetter-Matrix enthalten.
+**Alle 8 Dateien gehören direkt ins Hauptverzeichnis (`main`) des GitHub-Repositories. Es werden keine Unterordner benötigt.**
 
-## Dateien
+Diese Version ist funktional identisch mit dem v2-Paket mit Unterordnern. Lediglich die relativen Pfade wurden angepasst:
 
-- `index.html` — überarbeiteter, filterbarer Startplatzkompass.
-- `karte.html` — MapLibre GL JS Karte mit flüssigem Zoom/Pan, gruppierten Markern, Filterung, OpenFreeMap-/swisstopo-Stilumschaltung und mobiler Detailansicht.
-- `styles.css` — gemeinsames responsives Design.
-- `js/common.js` — gemeinsamer Datenlader, Filter und Detailansichten.
-- `js/index.js` — Listenansicht.
-- `js/map.js` — MapLibre, GeoJSON-Clustering, Kartenauswahl und Gesten.
-- `daten/startplaetze.json` — einzige Master-Datenbasis für beide Seiten, enthält vorhandene Quellnotizen und `aggregation_abschnitte`.
+- `index.html` und `karte.html`: Website und interaktive MapLibre-Karte
+- `styles.css`: Gemeinsames Design
+- `index.js`, `map.js`, `common.js`: Funktionen, Filter und Kartendarstellung
+- `startplaetze.json`: zentrale vollständige Startplatzdatenbank
+- `README.md`: Diese Anleitung
 
-## Veröffentlichung
+## Upload auf dem iPhone
 
-Den **Inhalt dieses Ordners** (nicht den Oberordner) in das Hauptverzeichnis des GitHub-Repositories `Jura-Startplatzkompass` kopieren. GitHub Pages veröffentlicht `index.html` unter `/Jura-Startplatzkompass/`, die Karte unter `/Jura-Startplatzkompass/karte.html`.
+1. ZIP in die **Dateien-App** laden und dort einmal antippen, um sie zu entpacken.
+2. Auf GitHub `michu173/Jura-Startplatzkompass` öffnen → `Add file` → `Upload files` (Safari ggf. Desktop-Website anfordern).
+3. `choose your files` antippen, in der Dateien-App den entpackten Ordner öffnen und über **Auswählen** alle 8 Dateien markieren.
+4. Hochladen lassen und mit `Commit changes` / `Propose changes` bestätigen. **Nicht die ZIP selbst hochladen.**
+5. Danach die GitHub-Pages-Seiten neu laden.
 
-Wichtig: Die Seiten müssen über `https://` oder einen lokalen HTTP-Server geöffnet werden, z. B. `python3 -m http.server 8000`. Beim direkten Öffnen via `file://` blockieren Browser das Laden der JSON-Datei.
+**Datenpflege:** `startplaetze.json` ist die einzige Datenquelle für beide Ansichten. 29 Startplatz-Einträge und 30 Startpositionen.
 
-MapLibre GL JS **v5.12.0** wird als fest gepinnte Abhängigkeit über jsDelivr geladen (Fallback auf unpkg). Die kostenfreien Vektorkacheln stammen von OpenFreeMap (Liberty/Positron) und optional von swisstopo (Landeskarte, WMTS) und erfordern Internetverbindung. Die Website hat keinen eigenen Backend-Server und keinen API-Schlüssel. Die Listenansicht bleibt bei einer Kartenstörung nutzbar.
-
-## Daten pflegen
-
-Nur `daten/startplaetze.json` bearbeiten, nicht Daten in HTML einfügen. Jeder Eintrag unter `sites` besitzt die bestehenden Felder, unter anderem `gps` als `[Breitengrad, Längengrad]`, `launch_variants`, `weather`, `aggregation_abschnitte` und `aggregierte_beschreibung`. Die Karte erwartet für jeden sichtbaren Standort gültige `gps`-Werte bzw. `launch_variants`.
-
-Die Materialsammlung ist keine Live-Flugwetterprognose. Lokale Regeln, Luftraum, Anlagenbetrieb, Wind und Landeplatz immer aktuell prüfen.
+**Hinweis:** Der Kartenhintergrund benötigt eine Internetverbindung; die HTML-Dateien müssen über GitHub Pages/Webserver und nicht lokal per `file://` geöffnet werden.
