@@ -1,5 +1,5 @@
-/** Shared data and presentation utilities. All displayed start-site facts come from ./startplaetze.json. */
-export const DATA_URL = new URL('./startplaetze.json', import.meta.url);
+/** Shared data and presentation utilities. All displayed start-site facts come from ../daten/startplaetze.json. */
+export const DATA_URL = new URL('../daten/startplaetze.json', import.meta.url);
 export async function loadData(){
   const response = await fetch(DATA_URL, {cache:'no-cache'});
   if(!response.ok) throw new Error(`Startplatzdaten nicht verfügbar (HTTP ${response.status})`);

@@ -1,27 +1,41 @@
-# Jura Startplatzkompass v2 – iPhone-Einzeldateien
+# Jura Startplatzkompass v2
 
-**Alle 8 Dateien gehören direkt ins Hauptverzeichnis (`main`) des GitHub-Repositories. Es werden keine Unterordner benötigt.**
+Statische Website auf GitHub Pages mit einer gemeinsamen Startplatzdatenbank und einer interaktiven MapLibre-Karte.
 
-Diese Version ist funktional identisch mit dem v2-Paket mit Unterordnern. Lediglich die relativen Pfade wurden angepasst:
+## Ordnerstruktur
 
-- `index.html` und `karte.html`: Website und interaktive MapLibre-Karte
-- `styles.css`: Gemeinsames Design
-- `index.js`, `map.js`, `common.js`: Funktionen, Filter und Kartendarstellung
-- `startplaetze.json`: zentrale vollständige Startplatzdatenbank
-- `README.md`: Diese Anleitung
+```text
+/
+├── index.html
+├── karte.html
+├── styles.css
+├── README.md
+├── js/
+│   ├── common.js
+│   ├── index.js
+│   └── map.js
+└── daten/
+    └── startplaetze.json
+```
 
-## Upload auf dem iPhone
+- `index.html` zeigt den Startplatzkompass und dessen Filter.
+- `karte.html` zeigt die interaktive MapLibre-Karte.
+- `styles.css` ist das gemeinsame Design.
+- `js/common.js` lädt die gemeinsame Datenbank und enthält geteilte Hilfsfunktionen.
+- `js/index.js` und `js/map.js` steuern die beiden Ansichten.
+- `daten/startplaetze.json` ist die **zentrale Datenquelle**. Beide Seiten lesen dieselben 29 Startplatz-Einträge und 30 GPS-Startpositionen.
 
-1. ZIP in die **Dateien-App** laden und dort einmal antippen, um sie zu entpacken.
-2. Auf GitHub `michu173/Jura-Startplatzkompass` öffnen → `Add file` → `Upload files` (Safari ggf. Desktop-Website anfordern).
-3. `choose your files` antippen, in der Dateien-App den entpackten Ordner öffnen und über **Auswählen** alle 8 Dateien markieren.
-4. Hochladen lassen und mit `Commit changes` / `Propose changes` bestätigen. **Nicht die ZIP selbst hochladen.**
-5. Danach die GitHub-Pages-Seiten neu laden.
+## Datenpflege
 
-**Datenpflege:** `startplaetze.json` ist die einzige Datenquelle für beide Ansichten. 29 Startplatz-Einträge und 30 Startpositionen.
+Startplatzangaben ausschliesslich in `daten/startplaetze.json` ändern. Bestehende Original-/Quellenfelder und die redaktionell aggregierten Felder getrennt erhalten. Die Links in `index.html` und `karte.html` erwarten die hier beschriebene Ordnerstruktur.
 
-**Hinweis:** Der Kartenhintergrund benötigt eine Internetverbindung; die HTML-Dateien müssen über GitHub Pages/Webserver und nicht lokal per `file://` geöffnet werden.
+## Veröffentlichen
 
-## Pflege der Website
+Das GitHub-Repository `michu173/Jura-Startplatzkompass` veröffentlicht den Inhalt des Branchs `main` über GitHub Pages:
 
-Die acht Dateien wurden für GitHub Pages geprüft. `startplaetze.json` ist die gemeinsame Datenquelle für Startplatzkompass und Karte. Änderungen an Beschreibungen, Startplätzen und Wetterangaben sollen dort erfolgen, damit beide Ansichten synchron bleiben.
+- https://michu173.github.io/Jura-Startplatzkompass/
+- https://michu173.github.io/Jura-Startplatzkompass/karte.html
+
+Die Seiten funktionieren nur über HTTP(S), nicht beim lokalen Öffnen über `file://`, da die JSON-Daten mit `fetch()` geladen werden. Karte und Vektorkacheln benötigen eine Internetverbindung.
+
+**Flugplanung:** Quellenangaben und Wetterbewertungen sind keine aktuelle Startfreigabe. Vor jedem Flug Luftraum, Flugwetter und lokale Regeln eigenständig prüfen.
