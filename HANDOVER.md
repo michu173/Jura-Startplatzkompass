@@ -18,6 +18,10 @@ The published page loaded the versioned script and reached the real MapLibre con
 
 First check the published map in a browser with working WebGL, including default rendering, clusters/markers, zoom/pan, fit, style switching and mobile gestures. Preserve the dataset while investigating. Existing unresolved Tannmatt Ost and Niederwiler Stierenberg Nord records, approximate Falaise altitudes, provenance gaps and audit metadata issues remain unchanged. No data re-extraction or resolution was performed.
 
+## Follow-up: zero-height map container
+
+The user reported that the startup warning disappeared but the map remained invisible. Live DOM measurements confirmed `.map-pane` at 998 × 808 pixels but `#map.maplibregl-map` at 998 × 0 pixels with `position: relative` and `overflow: hidden`. The MapLibre class rule overrode the original absolute `.map-canvas` rule. The CSS selector now targets `.map-pane > .map-canvas`, preserving absolute positioning across both the local and CDN CSS. The map page versions its stylesheet URL to refresh cached CSS. This follow-up addresses a separate visibility defect missed in the initial startup fix. Site data and map behavior are unchanged.
+
 ## Original handover — historical snapshot
 
 The complete original handover follows unchanged. Its pinned commit, package-relative website/ paths, verification limitations and next-step recommendations describe the 13 October baseline. The current amendment above supersedes only its map-startup and deployment status. It does not replace the original data decisions or evidence limitations.
