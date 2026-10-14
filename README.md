@@ -43,3 +43,5 @@ Die Seiten funktionieren nur über HTTP(S), nicht beim lokalen Öffnen über `fi
 ## Kartenstart — Korrektur vom 14. Oktober 2026
 
 Die Karte verwendet MapLibre GL JS 5.12.0. Diese Version exportiert keine `supported()`-Funktion. Die bisherige Vorabprüfung verhinderte deshalb jeden Kartenstart. `js/map.js` lässt nun den Kartenkonstruktor die WebGL-Initialisierung durchführen; echte Initialisierungsfehler werden weiterhin abgefangen und die Startplatzliste bleibt verfügbar. Datenmodell, Startplatzangaben und Kartenstile bleiben unverändert.
+
+Der Modulverweis in `karte.html` enthält für diese Korrektur eine Versionskennung, damit Browser die geänderte Kartendatei statt einer bis zu zehn Minuten zwischengespeicherten Version laden.
