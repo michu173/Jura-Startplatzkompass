@@ -22,6 +22,12 @@ First check the published map in a browser with working WebGL, including default
 
 The user reported that the startup warning disappeared but the map remained invisible. Live DOM measurements confirmed `.map-pane` at 998 × 808 pixels but `#map.maplibregl-map` at 998 × 0 pixels with `position: relative` and `overflow: hidden`. The MapLibre class rule overrode the original absolute `.map-canvas` rule. The CSS selector now targets `.map-pane > .map-canvas`, preserving absolute positioning across both the local and CDN CSS. The map page versions its stylesheet URL to refresh cached CSS. This follow-up addresses a separate visibility defect missed in the initial startup fix. Site data and map behavior are unchanged.
 
+## Follow-up: marker loss after basemap changes
+
+The user confirmed that the map and markers are visible after the layout fix, then reported markers disappearing after a map-type switch. MapLibre 5.12.0's default style diff can remove application overlays without emitting `style.load`; the original restoration depended on that event. Basemap changes now force a full reload with `{diff:false}`. The persistent style-load handler restores each missing source/layer, synchronizes current filters and selected-point state, and marks the map ready without waiting for tile/network idle.
+
+Targeted event regression checks using the actual application module and a MapLibre lifecycle double passed repeated Liberty/Positron/swisstopo switches, all 30 geographic points and four overlay layers, active filters, selected marker state, existing-source/missing-layer repair, idempotent restoration, and rapid consecutive switches. These are source/event checks, not a substitute for on-device visual acceptance. Data bytes are unchanged. The module URL is versioned as `20261014-3` to refresh browser caches. No basemap provider, style definition or geographic record changed.
+
 ## Original handover — historical snapshot
 
 The complete original handover follows unchanged. Its pinned commit, package-relative website/ paths, verification limitations and next-step recommendations describe the 13 October baseline. The current amendment above supersedes only its map-startup and deployment status. It does not replace the original data decisions or evidence limitations.

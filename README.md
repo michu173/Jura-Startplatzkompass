@@ -49,3 +49,7 @@ Der Modulverweis in `karte.html` enthält für diese Korrektur eine Versionskenn
 ## Unsichtbare Karte — Layoutkorrektur vom 14. Oktober 2026
 
 MapLibre ergänzt am Kartencontainer die Klasse `maplibregl-map`. Deren `position: relative` überschrieb die bisherige `.map-canvas`-Regel, sodass der Container auf 0 Pixel Höhe zusammenfiel und den Karteninhalt abschnitt. Der präzisere Selektor `.map-pane > .map-canvas` hält den Container nun absolut über die gesamte Kartenfläche positioniert. `karte.html` verwendet eine neue Stylesheet-Versionskennung gegen zwischengespeicherte CSS-Dateien.
+
+## Startplatzmarker beim Kartenwechsel
+
+MapLibre kann beim standardmässigen Stil-Diff die zusätzlichen Startplatzlayer entfernen, ohne ein neues `style.load` auszulösen. Der Kartenwechsel verwendet deshalb nun `setStyle(..., {diff: false})`. Nach jedem `style.load` werden die Startplatzquelle und alle vier Marker-/Clusterlayer wiederhergestellt und mit den aktuellen Filtern sowie der Auswahl synchronisiert. Die Karte wird danach sofort wieder bedienbar; sie wartet dafür nicht mehr auf `idle`. Fehlende Layer werden auch dann ergänzt, wenn die Quelle bereits besteht. Wiederholte und schnelle Wechsel sowie Filter und Auswahl wurden mit einem Ereignis-Regressionscheck geprüft.

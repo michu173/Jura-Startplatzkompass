@@ -17,12 +17,14 @@ function pointsAsGeoJSON(rows){
 }
 function addLayers(){
  if(!map||!map.getStyle?.())return;
- if(map.getSource('launches'))return;
- map.addSource('launches',{type:'geojson',data:geojson,cluster:true,clusterMaxZoom:15,clusterRadius:37});
- map.addLayer({id:'cluster-outer',type:'circle',source:'launches',filter:['has','point_count'],paint:{'circle-color':'#204a48','circle-opacity':.96,'circle-radius':['step',['get','point_count'],20,4,23,9,26],'circle-stroke-color':'#ffffff','circle-stroke-width':3,'circle-stroke-opacity':.98}});
- map.addLayer({id:'cluster-count',type:'symbol',source:'launches',filter:['has','point_count'],layout:{'text-field':['get','point_count_abbreviated'],'text-font':['Open Sans Bold','Arial Unicode MS Bold'],'text-size':12,'text-allow-overlap':true},paint:{'text-color':'#ffffff'}});
- map.addLayer({id:'unclustered',type:'circle',source:'launches',filter:['!',['has','point_count']],paint:{'circle-radius':['interpolate',['linear'],['zoom'],8,11,11,14,15,17],'circle-color':['match',['get','category'],'A',colors.A,'B',colors.B,'C',colors.C,colors.D],'circle-stroke-width':['case',['==',['get','selected'],1],5,3],'circle-stroke-color':['case',['==',['get','selected'],1],'#123a37','#ffffff'],'circle-opacity':.98}});
- map.addLayer({id:'unclustered-label',type:'symbol',source:'launches',filter:['!',['has','point_count']],layout:{'text-field':['get','category'],'text-font':['Open Sans Bold','Arial Unicode MS Bold'],'text-size':['interpolate',['linear'],['zoom'],8,10,13,12],'text-allow-overlap':true,'text-ignore-placement':true},paint:{'text-color':'#ffffff'}});
+ if(!map.getSource('launches'))map.addSource('launches',{type:'geojson',data:geojson,cluster:true,clusterMaxZoom:15,clusterRadius:37});
+ const layers=[
+  {id:'cluster-outer',type:'circle',source:'launches',filter:['has','point_count'],paint:{'circle-color':'#204a48','circle-opacity':.96,'circle-radius':['step',['get','point_count'],20,4,23,9,26],'circle-stroke-color':'#ffffff','circle-stroke-width':3,'circle-stroke-opacity':.98}},
+  {id:'cluster-count',type:'symbol',source:'launches',filter:['has','point_count'],layout:{'text-field':['get','point_count_abbreviated'],'text-font':['Open Sans Bold','Arial Unicode MS Bold'],'text-size':12,'text-allow-overlap':true},paint:{'text-color':'#ffffff'}},
+  {id:'unclustered',type:'circle',source:'launches',filter:['!',['has','point_count']],paint:{'circle-radius':['interpolate',['linear'],['zoom'],8,11,11,14,15,17],'circle-color':['match',['get','category'],'A',colors.A,'B',colors.B,'C',colors.C,colors.D],'circle-stroke-width':['case',['==',['get','selected'],1],5,3],'circle-stroke-color':['case',['==',['get','selected'],1],'#123a37','#ffffff'],'circle-opacity':.98}},
+  {id:'unclustered-label',type:'symbol',source:'launches',filter:['!',['has','point_count']],layout:{'text-field':['get','category'],'text-font':['Open Sans Bold','Arial Unicode MS Bold'],'text-size':['interpolate',['linear'],['zoom'],8,10,13,12],'text-allow-overlap':true,'text-ignore-placement':true},paint:{'text-color':'#ffffff'}}
+ ];
+ for(const layer of layers)if(!map.getLayer(layer.id))map.addLayer(layer);
 }
 function syncMap(){if(!db)return;geojson=pointsAsGeoJSON(visible);if(map&&map.getSource('launches'))map.getSource('launches').setData(geojson);}
 function rowsHTML(rows){return rows.map(r=>`<button type="button" class="site-row ${selected?.site.id===r.id?'active':''}" data-id="${r.id}"><span class="priority p-${prio(r)}">${prio(r)}</span><span style="flex:1;min-width:0"><span class="row-title">${esc(r.Startplatz)}</span><span class="row-sub">${labelAltitude(r['Höhe m'])} · Startwind ${esc(r.Startwind)} · ${esc(r.loc_class)}</span>${state.weather?`<span class="row-weather"><span class="suit ${suitClass(suit(r,state.weather))}">${esc(suit(r,state.weather))}</span></span>`:''}</span><span class="row-arrow">›</span></button>`).join('');}
@@ -60,13 +62,13 @@ function initialiseMap(){
  map=new maplibregl.Map({container:'map',style:styles[style],center:[7.32,47.23],zoom:9.3,minZoom:6,maxZoom:19,attributionControl:false,dragRotate:false,pitchWithRotate:false,cooperativeGestures:false,renderWorldCopies:false,locale:{'NavigationControl.ZoomIn':'Hineinzoomen','NavigationControl.ZoomOut':'Herauszoomen'}});
  map.touchZoomRotate.disableRotation();
  map.on('load',()=>{mapReady=true;addLayers();fitVisible();});
- map.on('style.load',()=>{warn.classList.add('hidden');addLayers();syncMap();});
+ map.on('style.load',()=>{warn.classList.add('hidden');addLayers();syncMap();mapReady=true;});
  map.on('click',mapClick);
  map.on('mousemove',e=>{if(!mapReady)return;const hit=map.queryRenderedFeatures(e.point,{layers:['unclustered','cluster-outer']});map.getCanvas().style.cursor=hit.length?'pointer':'';});
  map.on('error',e=>{console.warn('MapLibre:',e.error||e);if(!map.isStyleLoaded?.())showError('Der Kartenstil oder Vektorkacheln konnten nicht geladen werden. Die Startplatzliste bleibt verfügbar.');});
  }catch(err){console.error(err);showError('Fehler beim Start der Karte: '+err.message);}
 }
-function setStyle(next){style=next;document.querySelectorAll('[data-style]').forEach(b=>b.classList.toggle('active',b.dataset.style===style));if(!map)return;mapReady=false;map.setStyle(styles[style]);map.once('idle',()=>{mapReady=true;syncMap();});}
+function setStyle(next){if(!styles[next]||next===style)return;style=next;document.querySelectorAll('[data-style]').forEach(b=>b.classList.toggle('active',b.dataset.style===style));if(!map)return;mapReady=false;map.setStyle(styles[style],{diff:false});}
 for(const input of ['search','weather','access','onlySuitable'])el(input).addEventListener('input',applyFilters);
 el('priorities').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{state.priority=b.dataset.priority;el('priorities').querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));updateList();}));
 el('reset').addEventListener('click',()=>{el('search').value='';el('weather').value='';el('access').value='';el('onlySuitable').checked=false;state.priority='';el('priorities').querySelectorAll('button').forEach(x=>x.classList.toggle('active',x.dataset.priority===''));applyFilters();fitVisible();});
