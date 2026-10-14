@@ -55,7 +55,7 @@ function mapClick(e){if(!map||!mapReady)return;
 }
 function initialiseMap(){
  if(!window.maplibregl){showError('MapLibre konnte nicht geladen werden. Prüfe die Internetverbindung oder lade die Seite erneut. Die Startplatzliste bleibt verfügbar.');return;}
- if(!maplibregl.supported?.()){showError('Dieser Browser stellt keine WebGL-Karte bereit. Startplatzliste und Details bleiben nutzbar.');return;}
+ // MapLibre 5 has no supported() export; the constructor reports WebGL failures.
  try{
  map=new maplibregl.Map({container:'map',style:styles[style],center:[7.32,47.23],zoom:9.3,minZoom:6,maxZoom:19,attributionControl:false,dragRotate:false,pitchWithRotate:false,cooperativeGestures:false,renderWorldCopies:false,locale:{'NavigationControl.ZoomIn':'Hineinzoomen','NavigationControl.ZoomOut':'Herauszoomen'}});
  map.touchZoomRotate.disableRotation();
