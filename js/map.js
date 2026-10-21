@@ -1,4 +1,4 @@
-import {loadData,esc,el,matchWeatherChoices,sortAndFilter,prio,suit,suitClass,detailHTML,sitePoints,renderError,labelAltitude,DEFAULT_FILTERS,filtersFromSearch,writeFilters} from './common.js?v=20261021-1';
+import {loadData,esc,el,matchWeatherChoices,sortAndFilter,prio,suit,suitClass,detailHTML,sitePoints,renderError,labelAltitude,DEFAULT_FILTERS,filtersFromSearch,writeFilters} from './common.js?v=20261022-1';
 import {DIFFICULTY_COLORS,markerProperties,windImage} from './map-markers.js?v=20261021-2';
 const styles={
  liberty:'https://tiles.openfreemap.org/styles/liberty',
@@ -50,7 +50,7 @@ function addLayers(){
 function syncMap(){if(!db)return;geojson=pointsAsGeoJSON(visible);if(map&&map.getSource('launches')){restoreWindImages();map.getSource('launches').setData(geojson);}}
 function rowsHTML(rows){return rows.map(r=>`<button type="button" class="site-row ${selected?.site.id===r.id?'active':''}" data-id="${r.id}"><span class="priority p-${prio(r)}">${prio(r)}</span><span style="flex:1;min-width:0"><span class="row-title">${esc(r.Startplatz)}</span><span class="row-sub">${labelAltitude(r['Höhe m'])} · Startwind ${esc(r.Startwind)} · ${esc(r.loc_class)}</span>${state.weather?`<span class="row-weather"><span class="suit ${suitClass(suit(r,state.weather))}">${esc(suit(r,state.weather))}</span></span>`:''}</span><span class="row-arrow">›</span></button>`).join('');}
 function updateList(){
- visible=sortAndFilter(db.sites,state);
+ visible=sortAndFilter(db.sites,state,db.comparison_issues);
  el('count').textContent=`${visible.length} / ${db.sites.length}`;
  el('site-list').innerHTML=visible.length?rowsHTML(visible):'<div class="empty" style="margin:10px">Keine passenden Startplätze. Filter ändern.</div>';
  el('site-list').querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>openSiteById(Number(b.dataset.id),true)));
@@ -72,7 +72,7 @@ function openPoint(pt,fly,variantFocus=false){
  if(mapReady&&map&&fly){let currentZoom=map.getZoom();const zoom=Math.max(currentZoom,12);map.flyTo({center:[pt.lon,pt.lat],zoom:Math.min(zoom,15),essential:true,duration:prefersLessMotion?0:950});}
 }
 function openSiteById(id,fly=false){const pt=allPoints.find(p=>p.site.id===id);openPoint(pt,fly);}
-function applyFilters(){state.query=el('search').value;state.weather=el('weather').value;state.access=el('access').value;state.onlySuitable=el('onlySuitable').checked;updateList();}
+function applyFilters(){state.query=el('search').value;state.weather=el('weather').value;state.launchWind=el('launchWind').value;state.access=el('access').value;state.onlySuitable=el('onlySuitable').checked;updateList();}
 function fitVisible(){if(!map||!mapReady)return;const points=allPoints.filter(p=>visible.some(r=>r.id===p.site.id));if(!points.length)return;const bbox=new maplibregl.LngLatBounds();points.forEach(p=>bbox.extend([p.lon,p.lat]));map.fitBounds(bbox,{padding:{top:75,bottom:68,left:55,right:55},maxZoom:12.9,duration:prefersLessMotion?0:920,essential:true});}
 function mapClick(e){if(!mapReady||!markersReady())return;
  const hits=map.queryRenderedFeatures(e.point,{layers:['unclustered']});
@@ -96,9 +96,9 @@ function initialiseMap(){
  }catch(err){console.error(err);map=null;showError('Die Karte konnte nicht gestartet werden. Prüfe WebGL und die Internetverbindung. Die Startplatzliste bleibt verfügbar.');document.querySelectorAll('[data-style]').forEach(b=>b.disabled=true);}
 }
 function setStyle(next){if(!styles[next]||(next===style&&mapReady))return;style=next;document.querySelectorAll('[data-style]').forEach(b=>{b.classList.toggle('active',b.dataset.style===style);b.setAttribute('aria-pressed',String(b.dataset.style===style));});if(!map)return;beginMapLoad();try{map.setStyle(styles[style],{diff:false});}catch(error){console.error(error);showError('Der Kartenstil konnte nicht gewechselt werden. Bitte erneut versuchen.');}}
-for(const input of ['search','weather','access','onlySuitable'])el(input).addEventListener('input',applyFilters);
+for(const input of ['search','weather','launchWind','access','onlySuitable'])el(input).addEventListener('input',applyFilters);
 el('priorities').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{state.priority=b.dataset.priority;el('priorities').querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));updateList();}));
-el('reset').addEventListener('click',()=>{el('search').value='';el('weather').value='';el('access').value='';el('onlySuitable').checked=DEFAULT_FILTERS.onlySuitable;state.priority='';state.sort=DEFAULT_FILTERS.sort;applyFilters();fitVisible();});
+el('reset').addEventListener('click',()=>{el('search').value='';el('weather').value='';el('launchWind').value='';el('access').value='';el('onlySuitable').checked=DEFAULT_FILTERS.onlySuitable;state.priority='';state.sort=DEFAULT_FILTERS.sort;applyFilters();fitVisible();});
 for(const id of ['back','detail-close'])el(id).addEventListener('click',closeDetail);
 el('shade').addEventListener('click',closeDetail);
 document.addEventListener('keydown',e=>{if(!selected)return;if(e.key==='Escape'){e.preventDefault();closeDetail();}if(e.key==='Tab'&&mobile.matches){const items=[...el('detail').querySelectorAll('button:not(:disabled),a[href]')];const first=items[0],last=items.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}});
@@ -109,7 +109,7 @@ el('locate').addEventListener('click',()=>{if(!mapReady)return;if(!navigator.geo
 document.querySelectorAll('[data-style]').forEach(b=>b.addEventListener('click',()=>setStyle(b.dataset.style)));
 controlsReady(false);
 try{
- db=await loadData();allPoints=db.sites.flatMap(sitePoints);matchWeatherChoices(el('weather'),db.weatherkeys||[]);if(!db.weatherkeys.includes(state.weather))state.weather='';for(const [id,key] of Object.entries({search:'query',weather:'weather',access:'access'}))el(id).value=state[key];el('onlySuitable').checked=state.onlySuitable;document.querySelectorAll('[data-point-total]').forEach(e=>e.textContent=allPoints.length);updateList();
+ db=await loadData();allPoints=db.sites.flatMap(sitePoints);matchWeatherChoices(el('weather'),db.weatherkeys||[]);if(!db.weatherkeys.includes(state.weather))state.weather='';for(const [id,key] of Object.entries({search:'query',weather:'weather',launchWind:'launchWind',access:'access'}))el(id).value=state[key];el('onlySuitable').checked=state.onlySuitable;document.querySelectorAll('[data-point-total]').forEach(e=>e.textContent=allPoints.length);updateList();
  // CDN failures, including failed fallback, must not block the rest of the website.
  if(!window.maplibregl){await new Promise(resolve=>{let i=0;const interval=setInterval(()=>{if(window.maplibregl||++i>=30){clearInterval(interval);resolve();}},100);});}
  initialiseMap();

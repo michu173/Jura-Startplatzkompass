@@ -36,3 +36,12 @@ button:disabled{cursor:default;opacity:.55}summary:focus-visible{outline:3px sol
 .legend-scale{display:flex;gap:7px;flex-wrap:wrap;font-weight:700}
 .legend-scale .legend-dot{width:11px;height:11px;border:1px solid #172b28;vertical-align:-1px}
 .difficulty-easy{background:#54b85f}.difficulty-medium{background:#f5d94c}.difficulty-hard{background:#f28b34}.difficulty-unknown{background:#c3ced0}
+
+/* Launch wind remains a separate filter from the general weather situation. */
+.launch-wind-help{font-size:11px;color:#526b6f;line-height:1.45;margin:6px 0 0}
+.map-toolbar .map-wind{width:185px;flex-shrink:0}
+.map-toolbar .launch-wind-help{flex-basis:100%;margin:0}
+@media(max-width:700px){.map-toolbar .map-wind{width:100%}.map-toolbar .launch-wind-help{grid-column:1/-1}}
+@media(min-width:1101px){.filters-grid{grid-template-columns:minmax(220px,2fr) repeat(4,minmax(135px,1fr))}}
+@media(min-width:751px) and (max-width:1100px){.filters-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.filters-grid .input-field:first-child{grid-column:1/-1}}
+@media(max-width:700px){.map-toolbar .priority-buttons{grid-row:2}.map-toolbar .toggle{grid-column:1}}
