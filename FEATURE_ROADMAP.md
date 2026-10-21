@@ -6,7 +6,7 @@ Current task branch: `feature/launch-wind-filter`, based on marker PR #6 at `65f
 
 ## Ordered tasks
 
-1. **Launch-wind direction filter — in progress.** Match the expected wind at takeoff separately from grosswetterlage. Shared direction matching is implemented and tested. UI, URL integration and browser acceptance remain.
+1. **Launch-wind direction filter — implemented, ready for review in PR #7.** Separate controls on compass/map, URL persistence, reset/navigation and responsive behaviour are implemented. All 27 regressions and 32 actual Chromium/SwiftShader browser checks pass. See WIND_FILTER.md. Not merged/deployed.
 2. **Independent return-to-car planning — queued.** Present stored landing/access/return descriptions and useful links. Do not invent walking times, transport schedules, landing permissions or shuttle availability.
 3. **Compare two or three sites — queued.** Use existing difficulty, wind, access, hazards and return information, preserving uncertainty and variants.
 4. **Favourites and personal notes — queued.** Local-device storage with clear/delete controls; no accounts/backend. Keep personal notes separate from canonical facts.
@@ -14,24 +14,13 @@ Current task branch: `feature/launch-wind-filter`, based on marker PR #6 at `65f
 6. **Weather and airspace links — queued.** Relevant official links, without implying live weather/airspace clearance inside the app.
 7. **Offline saved descriptions — queued.** Save selected reference descriptions, coordinates and access information; offline tiles require separate provider/technical consideration.
 
-## Task 1 completed checkpoint
+## Current saved checkpoint
 
-- `js/launch-wind.js` now owns the conservative compass parser, shared per-site wind interpretation and `matchesLaunchWind`.
-- `js/map-markers.js` consumes the shared interpretation and re-exports its previous parser API. Direction fan semantics are preserved.
-- The filter matches eight compass directions, understands stored ranges/German notation and excludes unresolved Tannmatt Ost, unverified/rejected Orvin winds and NW mentioned only as an exclusion in the Chasseral north note. An empty filter retains all records. Matching a stored wind does not establish operating permission.
-- All 24 named Node regression tests pass, including exact dataset membership for all eight directions and the existing map/filter/error/variant tests. `git diff --check` passes.
-- Dataset SHA-256 stays `68e4e782fecb4b1e48c44b8fc8abcd95ab4868bf85275caaf1ed3de80c609c2a`; architecture/providers and stored facts are unchanged.
-- This is not a finished visible filter. No new real-browser or published-feature acceptance is claimed for this checkpoint.
+Task 1 is implemented on `feature/launch-wind-filter` in [PR #7](https://github.com/michu173/Jura-Startplatzkompass/pull/7), stacked on marker PR #6. Browser-tested runtime commit: `1d042c93e46a565f649b9d3ce1afcd9ba15f1d88`; later documentation/evidence commits do not change those runtime files. All 27 named regressions and 32 real-browser checks pass. The draft can become ready after current PR CI passes. WIND_FILTER.md and docs/wind-filter-verification.json contain behaviour, test names, source hashes and previews.
 
-## Next concrete steps for task 1
+Next task: **2 — independent return-to-car planning**, only after a fresh weekly-allowance report confirms room above the 25% stopping margin. The live quota meter remains unavailable. Do not repeat task 1 or claim the stale 44% report is current. Tasks 2–7 remain queued in the order above.
 
-1. Add `launchWind:''` to the shared default/URL state, validating values against `LAUNCH_WIND_DIRECTIONS`; use a dedicated `wind` URL parameter. Extend `sortAndFilter(items,state,issues=[])` with `matchesLaunchWind`, passing the dataset's comparison issues from both pages.
-2. Add accessible, separately labelled launch-wind controls to compass and map. Use canonical direction values with German labels and explain that unresolved sectors are excluded when a direction is selected.
-3. Wire initial state, change handling, reset and cross-page navigation on both pages. Preserve existing filters/sorting, all 29 groups/30 positions and Schwengimatt variants.
-4. Update cache versions consistently for changed entry/shared modules. Current checkpoint uses map entry `20261021-5`, marker module `20261021-2`, new wind module `20261021-1`; existing common/compass versions have not changed yet.
-5. Extend the VM harness linker for any new shared-module imports. Test combined wind/weather filters, unknown/excluded directions, URL validation/persistence, navigation and reset.
-6. Run focused real Chromium/SwiftShader checks with live providers against both pages, including phone/tablet layout, matching group/point counts, no grouping, fan zoom threshold and source errors. Do not claim native Safari testing. Record results before making the draft ready for review.
-7. Only then advance to task 2 on a coherent branch/PR; retain the earlier backlog order.
+For release, the unmerged marker parent must be handled before retargeting/merging this stacked PR. No runtime merge/deployment is authorized; await a subsequent user instruction, then check CI, Pages and published-byte parity.
 
 ## Continuation and allowance constraint
 

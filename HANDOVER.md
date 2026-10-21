@@ -1,6 +1,6 @@
-# Ordered backlog continuation — task 1 in progress
+# Ordered backlog continuation — task 1 ready for review
 
-Active work is now on `feature/launch-wind-filter`, stacked on marker PR #6. Shared launch-wind matching is implemented and all 24 regressions pass; visible controls/URL integration/browser acceptance are pending. Read FEATURE_ROADMAP.md for the exact next steps, task order and allowance constraints. The following marker/release records remain the parent branch history, not acceptance of the unfinished filter.
+`feature/launch-wind-filter` / PR #7 is stacked on marker PR #6. Launch-wind controls on both pages, shared filtering/URL state, reset/navigation and responsive behaviour are implemented. All 27 named regressions and 32 actual Chromium/SwiftShader checks pass. See WIND_FILTER.md and FEATURE_ROADMAP.md for evidence and continuation. Task 2 is queued pending a fresh weekly-allowance report; the live meter is unavailable. No runtime merge or deployment has occurred. The marker/release records below are retained parent history.
 
 # Marker feature candidate — not yet published
 

@@ -83,3 +83,7 @@ Details und Grenzen: WEBGL_ACCEPTANCE.md und RELEASE_VERIFICATION.md. Kein nativ
 ## Neue Kartenmarker — Feature-Kandidat
 
 Auf `feature/informative-map-markers` zeigt die Kreisfarbe die kanonische Schwierigkeit (grün/gelb/orange), der Buchstabe A–D die persönliche Priorität und ein oranger Fächer die Herkunft des Startwinds. Alle Startpositionen der aktuellen Filter bleiben auch beim Herauszoomen als einzelne Marker sichtbar; es gibt keine Gruppierung mehr. Die Richtungsfächer erscheinen erst beim Hineinzoomen (ab Zoom 11.5). Ungeklärte Richtungen erhalten auch dann keinen Fächer. Die aufklappbare Kartenlegende erklärt diese Trennung. Datensatz und Kartendienste bleiben unverändert. Dieser Kandidat ist noch nicht veröffentlicht; Design und Prüfnachweise stehen in MARKER_FEATURE.md.
+
+## Startwindfilter — Feature-Kandidat
+
+Auf `feature/launch-wind-filter` lässt sich der Wind am Start auf Startplatzliste und Karte getrennt von der Grosswetterlage filtern. Die acht Richtungen, Suche und weitere Filter bleiben beim Ansichtswechsel über die URL erhalten; Zurücksetzen entfernt auch den Startwindfilter. Ungeklärte Startwindsektoren werden nur bei aktiver Richtungswahl ausgeblendet. Eine passende Richtung ist keine Wetter- oder Betriebsfreigabe. Der Kandidat in PR #7 baut auf der noch offenen Marker-PR #6 auf und ist nicht veröffentlicht. Details und Tests: WIND_FILTER.md.
