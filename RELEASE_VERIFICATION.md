@@ -1,10 +1,39 @@
 # Release verification — 21 October 2026
 
-Later continuation: WEBGL_ACCEPTANCE.md records actual local Chromium/SwiftShader rendering with live map providers and the released marker-font correction. The release evidence below describes the earlier published release; native devices and fresh publication verification remain separate.
+Current continuation: direct public-file parity and actual published-map WebGL checks now pass. The current verification below supersedes the older blocked-public-access and WebGL-disabled records. Native-device acceptance remains separate.
 
 Website: https://michu173.github.io/Jura-Startplatzkompass/
 
-## Current runtime release — PR #2
+## Published deployment — current verification
+
+Confirmed remote `main` at the expected `1f601cbb75e4a6c550e55ac5b84faa53cbf7ac73`; PRs [#2](https://github.com/michu173/Jura-Startplatzkompass/pull/2) and [#3](https://github.com/michu173/Jura-Startplatzkompass/pull/3) are merged. [Stability tests 39658687635](https://github.com/michu173/Jura-Startplatzkompass/actions/runs/39658687635) and [Pages 39658687484](https://github.com/michu173/Jura-Startplatzkompass/actions/runs/39658687484) succeeded for that exact SHA. The deploy job log confirmed success and the existing production URL. The application requires no build; the existing Pages workflow uses Jekyll to package the repository root.
+
+The newly configured environment can access the public hostname. Both homepage and map returned HTTP 200 over HTTPS. Fetching the following published files produced byte-for-byte matches to the clean checkout at that SHA:
+
+| File | Bytes | Published/main SHA-256 |
+|---|---:|---|
+| `index.html` | 4102 | `fcdbb19372f64c2b799c62bc32875b0f5be944e92cefa8a11b49dcccf68f2b94` |
+| `karte.html` | 5191 | `758eafc56d8cf2c9b81e8da8446c11d0aa75f19f4dc7a7814cdc616de0a13e9d` |
+| `styles.css` | 16980 | `80ec163fea4093181b04c4af22acaf46ce0fa9fa5e33ef4d7f80710a20298104` |
+| `js/common.js` | 8169 | `e8f91e7996ae5699ef3aaaf4ecc737084981bf73d10b03eb3c79baf486c92c32` |
+| `js/index.js` | 3542 | `eb90671d3632267abe91c9a7b02a61bbbe944b0c8c8e5004225ded055e826141` |
+| `js/map.js` | 14996 | `6ac6f30dbf7aabd7c21b4299646f0942d30d12efb70fbbb7fb7f1049a911abfe` |
+| `daten/startplaetze.json` | 226579 | `68e4e782fecb4b1e48c44b8fc8abcd95ab4868bf85275caaf1ed3de80c609c2a` |
+| `tests/browser-check.html` | 2073 | `e5a9eacc780b504cd86781a0cce0e3fd6a9849446b00f9eff835110b48de5301` |
+
+The browser-referenced URLs were also compared directly: `styles.css?v=20261021-1`, `js/index.js?v=20261021-1`, `js/map.js?v=20261021-2` and `js/common.js?v=20261021-1` all matched the corresponding main files.
+
+All **42 actual public Chromium/SwiftShader WebGL checks** passed, covering all three live basemaps, repeated/rapid switching, rendered marker/cluster clicks, both Schwengimatt variants, filtering, zoom/pan/fit, desktop/tablet/phone layouts, phone focus/modal behavior and public compass-to-map navigation. See WEBGL_ACCEPTANCE.md for method and detailed results. All **18 regression tests** also passed locally on Node 24.19.0. No application changes were required; this follow-up updates documentation only. Runtime/data parity is checked again after its merge and Pages deployment; exact final SHA and workflow links are retained in the documentation PR description.
+
+No uncaught JavaScript errors, MapLibre error events or map-resource HTTP errors occurred. 28 superseded camera/style requests were cancelled with `net::ERR_ABORTED`; external basemap null-value-expression and missing-POI-sprite warnings did not prevent launch-overlay rendering. A browser-console resource-404 diagnostic was also observed; the captured application/map-resource responses had no HTTP errors. These are not native-device or performance results.
+
+Dataset bytes, architecture, CDN/provider choices, attribution and cache versions are unchanged: map entry module `20261021-2`; CSS, compass module and shared imports `20261021-1`. Real iPhone Safari touch/pinch/safe areas/orientation and hardware/Windows Edge acceptance remain unverified. DATA_SOURCES.md retains the unresolved operational-data evidence.
+
+## Earlier release evidence
+
+The records below describe the previous verification environments. Statements about blocked public access or disabled WebGL are historical and are superseded by the current verification above.
+
+## Runtime release — PR #2
 
 PR https://github.com/michu173/Jura-Startplatzkompass/pull/2 was merged as `4f7ad0091ce17610908d9083f47203705bde5aba`. Its runtime files match the version exercised by the 40 actual Chromium/SwiftShader browser checks in WEBGL_ACCEPTANCE.md. All 18 regression tests passed again on the merged checkout; merge CI run `39657941849` succeeded. The canonical dataset hash remains unchanged.
 
@@ -33,7 +62,7 @@ Live browser checks loaded the actual public compass/map inside `tests/browser-c
 
 The canonical JSON remains unchanged: SHA-256 `68e4e782fecb4b1e48c44b8fc8abcd95ab4868bf85275caaf1ed3de80c609c2a`; 29 site groups and 30 geographic positions. No source values, keys, IDs or relationships were reconstructed or silently reconciled.
 
-## Acceptance still required
+## Acceptance outstanding at the earlier release
 
 Priority 1: a WebGL-capable browser must visually confirm all three basemaps, marker/cluster visibility after repeated switching, selected-point/popup behavior and zoom/pan/fit. This cloud browser has WebGL disabled, so passing event tests cannot establish those visual results. Check real iPhone Safari touch/pinch, safe areas and orientation as well; iframe widths are responsive layout checks only.
 
