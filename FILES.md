@@ -13,6 +13,7 @@ Authority: the current GitHub branch and its commit history, not old handover ZI
 | `tests/data.test.js` | Dataset, filtering, details, references and URL-state tests |
 | `tests/browser-harness.js` | DOM/MapLibre API doubles for the real application modules; no WebGL renderer |
 | `tests/map.test.js` | Map lifecycle, filter/selection persistence, variants, focus and failure regressions |
+| `tests/browser-check.html` | Manual browser viewer of the real pages at phone/tablet/desktop iframe widths; no sample data |
 | `.github/workflows/tests.yml` | Read-only GitHub Actions regression checks for PRs and releases |
 | `README.md` | Run, maintain, publish and test instructions |
 | `HANDOVER.md` | Current status plus explicitly retained historical handover |
