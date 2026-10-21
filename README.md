@@ -69,3 +69,5 @@ Die Website bleibt statisches HTML/CSS/JavaScript mit derselben JSON-Datenquelle
 Node.js ab Version 20: `npm test`. Es werden keine npm-Abhängigkeiten installiert. Die Tests prüfen Datensatz, 360 Filterkombinationen, Anzeige, URL-Zustand, Kartenwechsel, Varianten, Fokus und Fehlerpfade. Die MapLibre-/DOM-Doubles führen die echten Anwendungsmodule aus, rendern aber weder WebGL noch native Touch-Gesten. Browser-Abnahme und Live-Verifikation bleiben eigene Freigabeschritte. Im Core-Fix-Checkpoint ist die Änderung noch nicht mit `main` zusammengeführt.
 
 Browser-Caches: CSS, beide Einstiegsmodule und deren gemeinsamer Modulimport tragen die Freigabekennung `20261021-1`. Bei späteren Änderungen alle betroffenen Referenzen konsistent aktualisieren. Originale Datenunsicherheiten stehen in DATA_SOURCES.md; eine strukturell gültige Datei ist keine fliegerische Startfreigabe.
+
+Die GitHub-Actions-Konfiguration `.github/workflows/tests.yml` führt `npm test` auf Node.js 22 bei Pull Requests und Änderungen an `main` aus. Sie benötigt nur Lesezugriff auf den Repository-Inhalt, keine Secrets und keine npm-Installation.
