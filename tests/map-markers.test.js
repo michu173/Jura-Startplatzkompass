@@ -30,7 +30,7 @@ test('canonical difficulty is independent of priority and unresolved sectors get
  assert.equal(markerProperties({site:{schwierigkeit_kanonisch:'unrecognised'}}).difficulty,'Unbekannt');
 });
 
-test('fan pixels point toward wind origin, leave disjoint gaps and rotate with the map',()=>{
+test('fan pixels point toward wind origin and leave disjoint gaps',()=>{
  const sample=(image,x,y)=>image.data[(y*image.width+x)*4+3];
  const north=windImage([0]);
  assert(sample(north,80,30)>0);assert.equal(sample(north,80,130),0);
