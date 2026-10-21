@@ -1,6 +1,6 @@
 # Latest continuation — WebGL acceptance, 21 October 2026
 
-Audited `main` remains at `f1da3c914693d2e3f81a4ce26fa4ba289c3bce87`. Actual MapLibre rendering and interaction were checked on the local checkout with live map providers in Chromium 154 / SwiftShader WebGL 2. All three basemaps, repeated/rapid switching, real marker/cluster clicks, filters, zoom/pan/fit, both Schwengimatt variants and phone/tablet viewports passed. See WEBGL_ACCEPTANCE.md for method, results and limits.
+Pre-change `main` baseline: `f1da3c914693d2e3f81a4ce26fa4ba289c3bce87`. Actual MapLibre rendering and interaction were checked on the local checkout with live map providers in Chromium 154 / SwiftShader WebGL 2. All three basemaps, repeated/rapid switching, real marker/cluster clicks, filters, zoom/pan/fit, both Schwengimatt variants and phone/tablet viewports passed. See WEBGL_ACCEPTANCE.md for method, results and limits.
 
 A small runtime correction uses the existing provider's `Noto Sans Bold` for both marker symbol layers, replacing a font stack that returned HTTP 404. Only the map entry-module URL advances to `20261021-2`; unchanged CSS, compass module and shared imports remain `20261021-1`. Dataset SHA-256 remains unchanged. The existing 18 regression tests pass.
 
