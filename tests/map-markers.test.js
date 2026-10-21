@@ -42,9 +42,11 @@ test('style restoration repairs fan images and selection halo while filters keep
  const app=await boot();app.completeStyle();
  const fan=app.map.getLayer('launch-wind');
  assert.equal(fan.layout['icon-rotation-alignment'],'map');
- assert.equal(app.map.layers.size,6);assert(app.map.images.size>0);
+ assert.equal(fan.minzoom,11.5,'direction fans are hidden in the overview');
+ assert.equal(app.map.getSource('launches').cluster,false);
+ assert.equal(app.map.layers.size,4);assert(app.map.images.size>0);
  const initialImages=app.map.images.size;
- for(const style of app.styles){style.dispatch('click');app.completeStyle();assert.equal(app.map.images.size,initialImages);assert.equal(app.map.layers.size,6);}
+ for(const style of app.styles){style.dispatch('click');app.completeStyle();assert.equal(app.map.images.size,initialImages);assert.equal(app.map.layers.size,4);}
  const removed=app.map.images.keys().next().value;app.map.images.delete(removed);app.map.layers.delete('launch-wind');app.completeStyle();assert(app.map.hasImage(removed));assert(app.map.getLayer('launch-wind'));
  app.element('search').value='Schwengimatt';app.element('search').dispatch('input');app.element('site-list').children[0].dispatch('click');
  app.element('detail-content').children.find(e=>e.dataset.pointId==='10-1').dispatch('click');
