@@ -19,5 +19,6 @@ Authority: the current GitHub branch and its commit history, not old handover ZI
 | `HANDOVER.md` | Current status plus explicitly retained historical handover |
 | `DATA_SOURCES.md` | Source authority, known conflicts and verification limits |
 | `MISSING.md` | Missing evidence and outstanding acceptance checks |
+| `RELEASE_VERIFICATION.md` | Release commits, test evidence, live checks and acceptance limits |
 
 Old CSV/Excel/JSON exports and the 53 Burnair/SHV screenshots belong to the original handover package, not the runtime repository. They must not replace the maintained JSON. External MapLibre libraries, map styles, tiles and glyphs are runtime dependencies, not missing local files.

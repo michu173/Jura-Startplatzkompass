@@ -1,18 +1,20 @@
-# Stabilisation checkpoint — 21 October 2026
+# Stabilisation release — 21 October 2026
 
-Authoritative baseline: `main` at `dc238574e687634afd2732c65c045415b9ea3cc2`. Core fixes are isolated on `fix/stabilise-20261021`; they are not yet deployed. The data file is byte-for-byte unchanged. Historical handover statements below describe earlier snapshots and do not override this checkpoint.
+Audited baseline: `main` at `dc238574e687634afd2732c65c045415b9ea3cc2`. PR #1 from `fix/stabilise-20261021` was merged as `a7261a0199b7a46087a610bb1323fe2f36054110`. The published release, including the manual responsive viewer, was verified at `ad655a0f3b2e90e5ce614a2d60658b572dc7c30f`. The data file is byte-for-byte unchanged. Historical handover statements below describe earlier snapshots and do not override this release record.
 
-## Completed on the feature branch
+## Implemented and published
 
 Shared validated URL filters/defaults; safe coordinate mapping without variant-ID shifts; validated/time-limited JSON loading; visible canonical difficulty; selectable existing launch variants; dynamic visible counts; tablet filter visibility and minor responsive/readability fixes. Map loading has timeout/retry states, guarded layer queries, stale cluster-response protection, and disabled controls when unusable. Map errors distinguish an unusable style/launch source from non-blocking tile failures. Full style reload and idempotent overlay restoration are retained. Topo CH now explicitly declares the existing OpenFreeMap font provider for marker labels. Mobile detail panels manage focus, background inertness and scroll locking. Source history, keys, IDs, source disagreements and all data values are preserved.
 
 ## Verification and release boundary
 
-18 dependency-free automated tests pass, including all 360 filter combinations, all current records/positions/sections, repeated/rapid style switches, filters/selection, both Schwengimatt variants, fallback/error recovery and mobile keyboard logic. Tests use actual modules with DOM/MapLibre API doubles: they are NOT visual WebGL or real-device acceptance. Existing zero-height map sizing is protected by a source regression check. No new CI workflow has been installed at this checkpoint.
+18 dependency-free automated tests pass, including all 360 filter combinations, all current records/positions/sections, repeated/rapid style switches, filters/selection, both Schwengimatt variants, fallback/error recovery and mobile keyboard logic. Tests use actual modules with DOM/MapLibre API doubles: they are NOT visual WebGL or real-device acceptance. Existing zero-height map sizing is protected by a source regression check. Read-only GitHub Actions CI runs the suite on Node 22. CI and Pages deployment succeeded for both the merge and `ad655a0`.
 
-The next bounded phase is browser/release verification, review of the feature-branch PR, merge and GitHub Pages parity/deployment checks. Do not mark the entire stabilisation task complete or claim live visual verification at this checkpoint. Previous cloud-browser sessions lacked WebGL. The connector cannot read Pages settings directly; use allowed workflow records and published-file parity instead. See FILES.md, DATA_SOURCES.md and MISSING.md for current inventory and unresolved evidence.
+Published-browser checks passed for compass and map at 390/768/1440-pixel iframe widths: no horizontal page overflow, positive map height, tablet suitable-weather checkbox visibility, search, shared navigation filters, empty results/reset, expanded details and both Schwengimatt positions. Phone details exposed a modal dialog, focused Close, made backgrounds inert, and restored focus/backgrounds on Escape. Desktop details did not lock backgrounds. These checks use actual deployed files and CSS, but are not native device tests.
 
-Budget: user last reported 58% remaining; actual usage is not observable. Pause after this core-fix checkpoint for a fresh allowance reading before release work. Do not estimate percentages from token counts.
+This cloud browser has WebGL disabled: map fallback and disabled controls were checked, but real rendered tiles/markers, cluster popups, all three basemap appearances, zoom/pan and iPhone Safari gestures remain outstanding acceptance. Do not claim complete visual map acceptance. The connector cannot read Pages settings directly; workflow records and published-file parity provide independent deployment evidence. See RELEASE_VERIFICATION.md for details and MISSING.md / DATA_SOURCES.md for unresolved evidence.
+
+Budget: checkpoints were provided after audit and core fixes; user last reported 56% remaining before release verification. Actual allowance is not observable. Do not estimate percentages from token counts. Optional redesign/polish was not undertaken.
 
 ## Earlier handover (14 October 2026)
 

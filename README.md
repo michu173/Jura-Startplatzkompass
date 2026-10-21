@@ -54,7 +54,7 @@ MapLibre ergänzt am Kartencontainer die Klasse `maplibregl-map`. Deren `positio
 
 MapLibre kann beim standardmässigen Stil-Diff die zusätzlichen Startplatzlayer entfernen, ohne ein neues `style.load` auszulösen. Der Kartenwechsel verwendet deshalb nun `setStyle(..., {diff: false})`. Nach jedem `style.load` werden die Startplatzquelle und alle vier Marker-/Clusterlayer wiederhergestellt und mit den aktuellen Filtern sowie der Auswahl synchronisiert. Die Karte wird danach sofort wieder bedienbar; sie wartet dafür nicht mehr auf `idle`. Fehlende Layer werden auch dann ergänzt, wenn die Quelle bereits besteht. Wiederholte und schnelle Wechsel sowie Filter und Auswahl wurden mit einem Ereignis-Regressionscheck geprüft.
 
-## Stabilisierung — 21. Oktober 2026 (Feature-Branch)
+## Stabilisierung — 21. Oktober 2026 (veröffentlicht)
 
 Die Website bleibt statisches HTML/CSS/JavaScript mit derselben JSON-Datenquelle. Kein Build und keine Installation sind zum Betrieb auf GitHub Pages nötig. Die Stabilisierung verändert keine Startplatzdaten.
 
@@ -66,7 +66,7 @@ Die Website bleibt statisches HTML/CSS/JavaScript mit derselben JSON-Datenquelle
 
 ### Regressionstests
 
-Node.js ab Version 20: `npm test`. Es werden keine npm-Abhängigkeiten installiert. Die Tests prüfen Datensatz, 360 Filterkombinationen, Anzeige, URL-Zustand, Kartenwechsel, Varianten, Fokus und Fehlerpfade. Die MapLibre-/DOM-Doubles führen die echten Anwendungsmodule aus, rendern aber weder WebGL noch native Touch-Gesten. Browser-Abnahme und Live-Verifikation bleiben eigene Freigabeschritte. Im Core-Fix-Checkpoint ist die Änderung noch nicht mit `main` zusammengeführt.
+Node.js ab Version 20: `npm test`. Es werden keine npm-Abhängigkeiten installiert. 18 Tests prüfen Datensatz, 360 Filterkombinationen, Anzeige, URL-Zustand, Kartenwechsel, Varianten, Fokus und Fehlerpfade. Die MapLibre-/DOM-Doubles führen die echten Anwendungsmodule aus, rendern aber weder WebGL noch native Touch-Gesten. PR #1 wurde mit `main` zusammengeführt; CI und GitHub-Pages-Bereitstellung waren erfolgreich. Live-Layout und Interaktionen wurden bei 390/768/1440 Pixeln geprüft. Die Browserumgebung hat WebGL deaktiviert; echte Karten-/Marker-Darstellung und Safari-Gesten bleiben zu prüfen. Details stehen in RELEASE_VERIFICATION.md. `tests/browser-check.html` dient als manueller Viewer der veröffentlichten Seiten.
 
 Browser-Caches: CSS, beide Einstiegsmodule und deren gemeinsamer Modulimport tragen die Freigabekennung `20261021-1`. Bei späteren Änderungen alle betroffenen Referenzen konsistent aktualisieren. Originale Datenunsicherheiten stehen in DATA_SOURCES.md; eine strukturell gültige Datei ist keine fliegerische Startfreigabe.
 
