@@ -1,5 +1,39 @@
 # WebGL acceptance — 21 October 2026
 
+## Published map — current verification
+
+Tested URL: https://michu173.github.io/Jura-Startplatzkompass/karte.html
+
+Baseline: remote `main` at `1f601cbb75e4a6c550e55ac5b84faa53cbf7ac73`, matching the clean checkout and expected PR #3 merge. Public HTTPS access returned 200, and published runtime/data bytes matched this commit before browser checks (hashes in RELEASE_VERIFICATION.md). The former hostname block is resolved in this new environment.
+
+Run: `2026-10-21T19:45:43.224Z` to `2026-10-21T19:49:34.917Z` (UTC). Linux headless Chromium `154.0.8037.57` / Playwright, WebGL 2 via ANGLE/Vulkan SwiftShader. The browser used the configured HTTPS proxy with its CA trusted in the Chromium NSS store; TLS verification remained enabled. It navigated directly to public Pages URLs, loading real MapLibre 5.12.0 and live OpenFreeMap/swisstopo resources, without localhost substitution, request interception or map/DOM doubles. A constructor proxy only observed the real Map instance and its errors. Checks waited for camera/source/tile completion and rendered symbol placement. Inspection included screenshots of all three desktop basemaps and tablet/phone layouts.
+
+All **42 public-browser checks passed**. This is a new published-site run, separate from the earlier 40 localhost checks below. After the 40 map checks, an ambiguous automation selector matched two valid compass-to-map links; selecting the first navigation link allowed the remaining two checks to pass without application changes.
+
+| Published check | Result |
+|---|---|
+| Initial Liberty map | 29 site groups, 30 source positions, four overlay layers, actual circles/category letters/cluster counts |
+| Three complete Positron → Topo CH → Liberty cycles | Overlays, source positions and zoom retained |
+| Real rendered cluster and unclustered-marker clicks | Cluster zoom increased; matching site details and selected point opened |
+| Both Schwengimatt variants on all three styles | Correct IDs, coordinates and 1097/1044 m; two separate rendered markers at zoom 15; correct selection |
+| Priority A, severe-weather filter and Reset | Four positions; zero/empty state; restored 29 groups and 30 positions |
+| Zoom buttons, mouse wheel, mouse drag and Fit | Camera changed correctly; fitted bounds contained every launch |
+| Six immediate basemap clicks ending on Liberty | All positions and overlays restored |
+| 1440×1000, 768×1024 and 390×844 | Positive visible canvas and no horizontal overflow; tablet suitable-weather checkbox visible |
+| All three styles at phone/tablet sizes | Live basemaps, circles and labels rendered |
+| Phone/tablet lower Schwengimatt details | Correct lower-variant selection and 1044 m |
+| Phone dialog, keyboard focus and Escape | Modal semantics, inert map background, focus trapping and restored row focus/background |
+| Public compass and navigation to map | 29 cards; Schwengimatt search preserved through navigation |
+| JavaScript, MapLibre and map-resource failures | No uncaught JavaScript errors, MapLibre error events or map-resource HTTP failures |
+
+Non-blocking diagnostics and cancelled requests are described in RELEASE_VERIFICATION.md. Node `v24.19.0` also passed all 18 regression tests. The dataset SHA-256 remains `68e4e782fecb4b1e48c44b8fc8abcd95ab4868bf85275caaf1ed3de80c609c2a`.
+
+Real iPhone Safari gestures, safe areas and orientation, hardware rendering/performance and Windows Edge still need their intended devices. Desktop Chromium viewport/keyboard/mouse checks establish no native touch acceptance. Existing data uncertainties remain unchanged.
+
+## Earlier localhost run — historical evidence
+
+The following records the previous local run and its then-blocked public hostname. Its public-access limitation is superseded by the direct published checks above; its device limitations still apply.
+
 ## Scope and method
 
 Baseline: `main` at `f1da3c914693d2e3f81a4ce26fa4ba289c3bce87`, unchanged since the previous release. Checks ran against the existing checkout served over HTTP on localhost, with the real MapLibre GL JS 5.12.0 CDN library, OpenFreeMap styles/fonts/vector tiles and swisstopo raster tiles. No map, source, worker or DOM doubles supplied rendering or interaction behavior.

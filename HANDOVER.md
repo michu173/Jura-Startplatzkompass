@@ -1,4 +1,12 @@
-# Latest continuation — WebGL acceptance, 21 October 2026
+# Published-site verification — 21 October 2026
+
+Verified the existing GitHub Pages deployment against `main` at `1f601cbb75e4a6c550e55ac5b84faa53cbf7ac73`. Remote `main` matched the expected SHA; PRs #2 and #3 were merged. CI run `39658687635` and Pages run `39658687484` succeeded for that SHA; the deploy log confirmed the existing production URL. HTTPS access now succeeds from the newly configured environment.
+
+Eight published files match that commit byte-for-byte, including every runtime/data file. All 42 public-browser checks passed with actual Chromium/SwiftShader WebGL 2 and live providers; all 18 Node regression tests passed. No runtime, provider, architecture or dataset changes were needed. See WEBGL_ACCEPTANCE.md and RELEASE_VERIFICATION.md for method, results and hashes. The documentation PR's final merge/deployment evidence is recorded in its GitHub description.
+
+Still unverified: native iPhone Safari touch/pinch, safe areas and orientation; hardware rendering/performance and Windows Edge. Operational-data uncertainties in DATA_SOURCES.md remain unchanged. The older blocked-public-access and WebGL-disabled records below describe previous environments, not the current verification.
+
+# Previous continuation — local WebGL acceptance, 21 October 2026
 
 Pre-change `main` baseline: `f1da3c914693d2e3f81a4ce26fa4ba289c3bce87`. Actual MapLibre rendering and interaction were checked on the local checkout with live map providers in Chromium 154 / SwiftShader WebGL 2. All three basemaps, repeated/rapid switching, real marker/cluster clicks, filters, zoom/pan/fit, both Schwengimatt variants and phone/tablet viewports passed. See WEBGL_ACCEPTANCE.md for method, results and limits.
 
