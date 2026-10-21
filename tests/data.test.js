@@ -103,7 +103,7 @@ test('HTML and module references exist; map sizing regression stays protected',(
   const html=fs.readFileSync(path.join(root,file),'utf8');
   for(const [,reference] of html.matchAll(/(?:src|href)="(\.\/[^"#]+)"/g))assert(fs.existsSync(path.resolve(root,reference.split('?')[0])),reference);
  }
- for(const file of ['common.js','index.js','map.js','map-markers.js']){
+ for(const file of ['common.js','index.js','map.js','map-markers.js','launch-wind.js']){
   const source=fs.readFileSync(path.join(root,'js',file),'utf8');
   for(const [,reference] of source.matchAll(/from\s+'(\.[^']+)'/g))assert(fs.existsSync(path.resolve(root,'js',reference.split('?')[0])),reference);
  }

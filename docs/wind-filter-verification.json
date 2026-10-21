@@ -1,0 +1,250 @@
+{
+  "runtime_commit": "1d042c93e46a565f649b9d3ce1afcd9ba15f1d88",
+  "parent_marker_pr": 6,
+  "filter_pr": 7,
+  "named_node_regression_tests": 27,
+  "combined_wind_weather_priority_access_cases": 2880,
+  "method": "Local feature checkout with actual Chromium/SwiftShader WebGL 2 and live MapLibre/OpenFreeMap/swisstopo resources; not published-feature, hardware or native-device acceptance.",
+  "source_sha256": {
+    "index.html": "890de4d21debaa933bdfec6b7dcc43ee61e6ec65f3925831aed9bb461fefd679",
+    "karte.html": "2cac30fc582d4c4ab2e1ed0bce3836a9c4e7bbbec0aae17e2f058f93151a2153",
+    "styles.css": "69734a73de4c3f3459acd9a78e58d4c9c0dbbd9b00309ad382824adc39749f24",
+    "js/common.js": "e4be34b682627dded1cd7a540dc82ba826732e1f63042d8ee670678ba49cf2d1",
+    "js/index.js": "f41be64edc4dcaa8c0e96eefaac755e9d9b54770e98f62a20c8509155db7c337",
+    "js/map.js": "d3e55a1909c6716840a78f35f022154b9723e34e1055ef58b6de559cdacd1698",
+    "js/map-markers.js": "4c6829b393b9635b20ba2b3b8f44c1e7a9426da20036bbb2a5d3b96a0e9996b8",
+    "js/launch-wind.js": "f5532b9271b409c3d79525fd8da24d8b6a94adeac64297ab0d8c3fe38e3a5e97",
+    "daten/startplaetze.json": "68e4e782fecb4b1e48c44b8fc8abcd95ab4868bf85275caaf1ed3de80c609c2a"
+  },
+  "browser_report": {
+    "started": "2026-10-21T22:39:24.993Z",
+    "base": "http://127.0.0.1:8766/",
+    "checks": [
+      {
+        "name": "Compass N: canonical membership, exclusions and URL",
+        "result": "pass"
+      },
+      {
+        "name": "Compass NE: canonical membership, exclusions and URL",
+        "result": "pass"
+      },
+      {
+        "name": "Compass E: canonical membership, exclusions and URL",
+        "result": "pass"
+      },
+      {
+        "name": "Compass SE: canonical membership, exclusions and URL",
+        "result": "pass"
+      },
+      {
+        "name": "Compass S: canonical membership, exclusions and URL",
+        "result": "pass"
+      },
+      {
+        "name": "Compass SW: canonical membership, exclusions and URL",
+        "result": "pass"
+      },
+      {
+        "name": "Compass W: canonical membership, exclusions and URL",
+        "result": "pass"
+      },
+      {
+        "name": "Compass NW: canonical membership, exclusions and URL",
+        "result": "pass"
+      },
+      {
+        "name": "Invalid wind URL restores all sites and removes invalid state",
+        "result": "pass"
+      },
+      {
+        "name": "Launch wind and general weather remain independent, reset clears both",
+        "result": "pass"
+      },
+      {
+        "name": "Compass-to-map and back preserve wind and search, including two variants",
+        "result": "pass"
+      },
+      {
+        "name": "Map N: same groups/positions as compass, no clustering",
+        "result": "pass"
+      },
+      {
+        "name": "Map NE: same groups/positions as compass, no clustering",
+        "result": "pass"
+      },
+      {
+        "name": "Map E: same groups/positions as compass, no clustering",
+        "result": "pass"
+      },
+      {
+        "name": "Map SE: same groups/positions as compass, no clustering",
+        "result": "pass"
+      },
+      {
+        "name": "Map S: same groups/positions as compass, no clustering",
+        "result": "pass"
+      },
+      {
+        "name": "Map SW: same groups/positions as compass, no clustering",
+        "result": "pass"
+      },
+      {
+        "name": "Map W: same groups/positions as compass, no clustering",
+        "result": "pass"
+      },
+      {
+        "name": "Map NW: same groups/positions as compass, no clustering",
+        "result": "pass"
+      },
+      {
+        "name": "North filter survives positron basemap reload",
+        "result": "pass"
+      },
+      {
+        "name": "North filter survives swisstopo basemap reload",
+        "result": "pass"
+      },
+      {
+        "name": "North filter survives liberty basemap reload",
+        "result": "pass"
+      },
+      {
+        "name": "Wind fans retain the 11.5 zoom threshold with active filtering",
+        "result": "pass"
+      },
+      {
+        "name": "Both Schwengimatt variants and selection remain correct with north filter",
+        "result": "pass"
+      },
+      {
+        "name": "desktop compass: visible labelled control, retained URL and no overflow",
+        "result": "pass"
+      },
+      {
+        "name": "desktop map: visible control/checkbox/canvas and same filtered positions",
+        "result": "pass"
+      },
+      {
+        "name": "tablet compass: visible labelled control, retained URL and no overflow",
+        "result": "pass"
+      },
+      {
+        "name": "tablet map: visible control/checkbox/canvas and same filtered positions",
+        "result": "pass"
+      },
+      {
+        "name": "phone compass: visible labelled control, retained URL and no overflow",
+        "result": "pass"
+      },
+      {
+        "name": "phone map: visible control/checkbox/canvas and same filtered positions",
+        "result": "pass"
+      },
+      {
+        "name": "Phone empty map filter and reset restore all 29 groups/30 positions",
+        "result": "pass"
+      },
+      {
+        "name": "No uncaught JavaScript, MapLibre or application/map-resource failures",
+        "result": "pass"
+      }
+    ],
+    "pageErrors": [],
+    "mapErrors": [],
+    "httpErrors": [],
+    "failedRequests": [
+      {
+        "url": "https://tiles.openfreemap.org/planet/20261018_080001_pt/11/1066/717.pbf",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://tiles.openfreemap.org/planet/20261018_080001_pt/11/1066/718.pbf",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://tiles.openfreemap.org/planet/20261018_080001_pt/9/267/179.pbf",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://tiles.openfreemap.org/planet/20261018_080001_pt/9/267/180.pbf",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1065/718.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1065/719.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1066/718.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1066/719.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1064/718.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1065/717.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1064/719.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1066/717.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1064/717.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1065/720.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1067/718.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1066/720.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1067/719.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1064/720.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1067/717.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/11/1063/718.jpeg",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://tiles.openfreemap.org/planet/20261018_080001_pt/10/531/359.pbf",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://tiles.openfreemap.org/planet/20261018_080001_pt/10/531/358.pbf",
+        "error": "net::ERR_ABORTED"
+      }
+    ],
+    "browser": "154.0.8037.57",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "result": "pass",
+    "finished": "2026-10-21T22:40:40.150Z"
+  }
+}

@@ -1,30 +1,11 @@
+import {siteWindBearings} from './launch-wind.js?v=20261021-1';
+export {windBearings} from './launch-wind.js?v=20261021-1';
 // Presentation derived from the existing canonical data; no geographic facts are added.
 export const DIFFICULTY_COLORS={Leicht:'#54b85f',Mittel:'#f5d94c',Schwer:'#f28b34',Unbekannt:'#c3ced0'};
-const bearings={N:0,NE:45,E:90,SE:135,S:180,SW:225,W:270,NW:315,NO:45,O:90,SO:135};
-
-export function windBearings(value){
- // Only the leading direction list is authoritative here. Parenthetical conditions
- // can contain excluded winds (e.g. "N (... NW nicht ...)") and must not become fans.
- const head=String(value??'').split(/[;(]/,1)[0].trim().toUpperCase().replace(/\s+/g,'');
- if(!head)return [];
- const result=new Set();
- for(const part of head.split(/[,/]/)){
-  const range=part.split(/[–—-]/);
-  if(range.length>2||range.some(d=>!Object.hasOwn(bearings,d)))return [];
-  const start=bearings[range[0]],end=bearings[range.at(-1)];
-  const span=(end-start+360)%360;
-  // Do not guess the intended path for a long/ambiguous compass range.
-  if(span>=180)return [];
-  for(let offset=0;offset<=span;offset+=45)result.add((start+offset)%360);
- }
- return [...result].sort((a,b)=>a-b);
-}
-
 export function markerProperties(point,issues=[]){
  const site=point.site;
  const difficulty=Object.hasOwn(DIFFICULTY_COLORS,site.schwierigkeit_kanonisch)?site.schwierigkeit_kanonisch:'Unbekannt';
- const unresolved=issues.some(i=>i.site===site.Startplatz&&i.status==='unresolved'&&/wind|wetterrichtung/i.test(i.field));
- const directions=unresolved?[]:windBearings(site.Startwind);
+ const directions=siteWindBearings(site,issues);
  return {difficulty,windKnown:directions.length>0,windIcon:directions.length?`wind-${directions.join('-')}`:'',directions};
 }
 

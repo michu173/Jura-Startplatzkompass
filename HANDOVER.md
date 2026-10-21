@@ -1,3 +1,7 @@
+# Ordered backlog continuation — task 1 ready for review
+
+`feature/launch-wind-filter` / PR #7 is stacked on marker PR #6. Launch-wind controls on both pages, shared filtering/URL state, reset/navigation and responsive behaviour are implemented. All 27 named regressions and 32 actual Chromium/SwiftShader checks pass. See WIND_FILTER.md and FEATURE_ROADMAP.md for evidence and continuation. Task 2 is queued pending a fresh weekly-allowance report; the live meter is unavailable. No runtime merge or deployment has occurred. The marker/release records below are retained parent history.
+
 # Marker feature candidate — not yet published
 
 Work continues on `feature/informative-map-markers`, based on `0aa1751`. Circles encode canonical difficulty, their A–D letters encode personal priority, and orange fans encode stored launch-wind origins. All matching launches now stay individual at every zoom; direction fans appear only from zoom 11.5. All 22 named regressions and 25 focused actual Chromium/SwiftShader checks pass for this refinement; implementation is ready for PR review. See MARKER_FEATURE.md for the preview, evidence and remaining release steps. No other backlog feature or canonical data changes are included. The existing published release and its evidence remain below.

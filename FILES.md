@@ -7,6 +7,10 @@ Authority: the current GitHub branch and its commit history, not old handover ZI
 | `daten/startplaetze.json` | Sole authoritative dataset, including preserved source fields, IDs and launch variants |
 | `index.html`, `js/index.js` | Filtered compass/cards and expandable site details |
 | `karte.html`, `js/map.js` | Interactive map, layers, filters, controls and detail panel |
+| `js/launch-wind.js` | Shared conservative wind parsing and filter matching |
+| `tests/launch-wind.test.js` | Exact direction-filter membership and exclusions |
+| `FEATURE_ROADMAP.md` | Ordered feature backlog and concrete continuation checkpoint |
+| `WIND_FILTER.md`, `docs/wind-filter-verification.json`, `docs/wind-filter-*.jpg` | Wind-filter behaviour, current named browser-check/source-hash evidence and previews |
 | `js/map-markers.js` | Difficulty mapping, conservative launch-direction parsing and generated wind sprites |
 | `tests/map-markers.test.js` | Marker semantics, directional pixel geometry and sprite/layer lifecycle regressions |
 | `MARKER_FEATURE.md` | Marker candidate design, preservation guarantees and verification checkpoint |

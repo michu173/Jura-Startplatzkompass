@@ -1,13 +1,14 @@
+import {LAUNCH_WIND_DIRECTIONS,matchesLaunchWind} from './launch-wind.js?v=20261021-1';
 /** Shared data and presentation utilities. All displayed start-site facts come from ../daten/startplaetze.json. */
 export const DATA_URL = new URL('../daten/startplaetze.json', import.meta.url);
-export const DEFAULT_FILTERS={query:'',weather:'',priority:'',access:'',onlySuitable:true,sort:'priority'};
+export const DEFAULT_FILTERS={query:'',weather:'',launchWind:'',priority:'',access:'',onlySuitable:true,sort:'priority'};
 export function filtersFromSearch(search=''){
  const p=new URLSearchParams(search);
- return {...DEFAULT_FILTERS,query:p.get('q')||'',weather:p.get('weather')||'',priority:['A','B','C','D'].includes(p.get('priority'))?p.get('priority'):'',access:['Bergbahn','Bus','Auto/Hike'].includes(p.get('access'))?p.get('access'):'',onlySuitable:p.get('suitable')!=='0',sort:['name','weather'].includes(p.get('sort'))?p.get('sort'):'priority'};
+ return {...DEFAULT_FILTERS,query:p.get('q')||'',weather:p.get('weather')||'',launchWind:LAUNCH_WIND_DIRECTIONS.includes(p.get('wind'))?p.get('wind'):'',priority:['A','B','C','D'].includes(p.get('priority'))?p.get('priority'):'',access:['Bergbahn','Bus','Auto/Hike'].includes(p.get('access'))?p.get('access'):'',onlySuitable:p.get('suitable')!=='0',sort:['name','weather'].includes(p.get('sort'))?p.get('sort'):'priority'};
 }
 export function writeFilters(state){
  const url=new URL(window.location.href);
- for(const [key,param] of Object.entries({query:'q',weather:'weather',priority:'priority',access:'access',onlySuitable:'suitable',sort:'sort'})){
+ for(const [key,param] of Object.entries({query:'q',weather:'weather',launchWind:'wind',priority:'priority',access:'access',onlySuitable:'suitable',sort:'sort'})){
   url.searchParams.delete(param);
   if(state[key]!==DEFAULT_FILTERS[key])url.searchParams.set(param,key==='onlySuitable'?'0':state[key]);
  }
@@ -42,10 +43,11 @@ export const prio=(r)=>String(r.category||r.pr?.charAt(0)||'D').charAt(0).toUppe
 export const level={Günstig:0,Prüfen:1,Unpassend:2,Meiden:3};
 export function suit(r,w){return w?(r.weather?.[w]??'Nicht bewertet'):'';}
 export function suitClass(v){return v==='Günstig'?'good':v==='Prüfen'?'check':'bad';}
-export function sortAndFilter(items,s){
+export function sortAndFilter(items,s,issues=[]){
  const q=(s.query||'').trim().toLocaleLowerCase('de-CH');
  const results=items.filter(r=>{
   if(s.priority && prio(r)!==s.priority)return false;
+  if(s.launchWind&&!matchesLaunchWind(r,s.launchWind,issues))return false;
   if(s.access && r.loc_class!==s.access)return false;
   if(s.weather && s.onlySuitable && !['Günstig','Prüfen'].includes(suit(r,s.weather)))return false;
   if(s.xc && !(s.xc==='Sehr gut'?r.XC==='Sehr gut':String(r.XC).toLowerCase().includes('gut')))return false;
