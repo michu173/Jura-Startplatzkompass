@@ -44,15 +44,17 @@ export async function boot({mobile=false,constructorError=false,missingLibrary=f
  const location={href:'https://example.test/karte.html'+search,search};
  const timers=new Map();let serial=0,instance,geoRequests=0;
  class MapDouble{
-  constructor(options){if(constructorError)throw new Error('WebGL disabled');instance=this;this.options=options;this.events={};this.sources=new Map();this.layers=new Map();this.swaps=[];this.camera=[];this.touchZoomRotate={disableRotation(){}};}
+  constructor(options){if(constructorError)throw new Error('WebGL disabled');instance=this;this.options=options;this.events={};this.sources=new Map();this.layers=new Map();this.swaps=[];this.camera=[];this.images=new Map();this.touchZoomRotate={disableRotation(){}};}
   on(name,fn){(this.events[name]??=[]).push(fn);}
   emit(name,event={}){for(const fn of this.events[name]||[])fn(event);}
   getStyle(){return this.style||{};}
   getLayer(id){return this.layers.get(id);}
   getSource(id){return this.sources.get(id);}
   addSource(id,spec){if(this.sources.has(id))throw new Error('duplicate source');this.sources.set(id,{...spec,setData(data){this.data=data;}});}
+  hasImage(id){return this.images.has(id);}
+  addImage(id,data,options){if(this.images.has(id))throw new Error('duplicate image');this.images.set(id,{data,options});}
   addLayer(layer){if(this.layers.has(layer.id))throw new Error('duplicate layer');this.layers.set(layer.id,layer);}
-  setStyle(style,options){this.swaps.push({style,options});this.style=style;this.sources.clear();this.layers.clear();}
+  setStyle(style,options){this.swaps.push({style,options});this.style=style;this.sources.clear();this.layers.clear();this.images.clear();}
   getZoom(){return 10;}
   fitBounds(...args){this.camera.push(['fit',...args]);}
   flyTo(options){this.camera.push(['fly',options]);}
@@ -67,7 +69,8 @@ export async function boot({mobile=false,constructorError=false,missingLibrary=f
  const window={location,history:{replaceState(a,b,url){location.href=url.href;location.search=url.search;}},matchMedia:query=>query.includes('700px')?media:{matches:false},maplibregl:missingLibrary?undefined:library};
  const context=vm.createContext({window,document,navigator:{geolocation:{getCurrentPosition(){geoRequests++;}}},maplibregl:library,URL,URLSearchParams,AbortController,fetch:async()=>({ok:!dataError,status:dataError?503:200,json:async()=>data}),console:{error(){},warn(){}},setTimeout(fn,ms){const id=++serial;timers.set(id,{fn,ms});return id;},clearTimeout:id=>timers.delete(id),setInterval(fn){const id=++serial;queueMicrotask(()=>{for(let i=0;i<30;i++)fn();});return id;},clearInterval(){},alert(){}});
  const common=new vm.SourceTextModule(fs.readFileSync(new URL('../js/common.js',import.meta.url),'utf8'),{context,initializeImportMeta(meta){meta.url=new URL('../js/common.js',import.meta.url).href;}});
+ const markerModule=new vm.SourceTextModule(fs.readFileSync(new URL('../js/map-markers.js',import.meta.url),'utf8'),{context});
  const app=new vm.SourceTextModule(fs.readFileSync(new URL('../js/map.js',import.meta.url),'utf8'),{context});
- await app.link(()=>common);await app.evaluate();
+ await app.link(specifier=>specifier.includes('map-markers.js')?markerModule:common);await app.evaluate();
  return {map:instance,document,element:id=>document.getElementById(id),styles:styleButtons,priorities,backgrounds,media,data,location,get geoRequests(){return geoRequests;},completeStyle(){instance.emit('style.load');},tick(ms){for(const [id,timer] of [...timers])if(timer.ms<=ms){timers.delete(id);timer.fn();}}};
 }

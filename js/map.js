@@ -1,10 +1,11 @@
 import {loadData,esc,el,matchWeatherChoices,sortAndFilter,prio,suit,suitClass,detailHTML,sitePoints,renderError,labelAltitude,DEFAULT_FILTERS,filtersFromSearch,writeFilters} from './common.js?v=20261021-1';
+import {DIFFICULTY_COLORS,markerProperties,windImage} from './map-markers.js?v=20261021-1';
 const styles={
  liberty:'https://tiles.openfreemap.org/styles/liberty',
  positron:'https://tiles.openfreemap.org/styles/positron',
  swisstopo:{version:8, name:'SwissTopo', glyphs:'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf', sources:{swisstopo:{type:'raster',tiles:['https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg'],tileSize:256,attribution:'© swisstopo'}},layers:[{id:'swisstopo-basemap',type:'raster',source:'swisstopo'}]}
 };
-const colors={'A':'#157b56','B':'#c59a42','C':'#d77a3e','D':'#697c84'};
+const windImages=new Map();
 const state=filtersFromSearch(window.location.search);
 let db=null,map=null,allPoints=[],visible=[],selected=null,locationMarker=null,style='liberty',mapReady=false;
 const prefersLessMotion=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false;
@@ -15,7 +16,7 @@ const warn=el('map-error');
 function controlsReady(ready){for(const id of ['zoom-in','zoom-out','fit','locate'])el(id).disabled=!ready;}
 function showError(s){clearTimeout(loadTimer);el('map-status').textContent='';warn.classList.remove('hidden');if(s)warn.querySelector('p').textContent=s;}
 function beginMapLoad(){mapReady=false;controlsReady(false);warn.classList.add('hidden');el('map-status').textContent='Karte wird geladen …';clearTimeout(loadTimer);loadTimer=setTimeout(()=>showError('Die Karte lädt zu lange. Wähle einen anderen Kartenstil oder lade die Seite erneut. Die Startplatzliste bleibt verfügbar.'),20000);}
-const markerLayers=['cluster-outer','cluster-count','unclustered','unclustered-label'];
+const markerLayers=['launch-wind','cluster-outer','cluster-count','selection-ring','unclustered','unclustered-label'];
 function markersReady(){return !!map&&markerLayers.every(id=>map.getLayer(id));}
 function updateSelection(){el('site-list').querySelectorAll('[data-id]').forEach(b=>{const active=Number(b.dataset.id)===selected?.site.id;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');});}
 function detailMode(){
@@ -27,20 +28,28 @@ function detailMode(){
 mobile.addEventListener('change',detailMode);
 function pointsAsGeoJSON(rows){
  const ids=new Set(rows.map(r=>r.id));
- return {type:'FeatureCollection',features:allPoints.filter(pt=>ids.has(pt.site.id)).map(pt=>({type:'Feature',id:pt.id,geometry:{type:'Point',coordinates:[pt.lon,pt.lat]},properties:{siteId:pt.site.id,pointId:pt.id,name:pt.name,category:prio(pt.site),selected:selected?.id===pt.id?1:0}}))};
+ return {type:'FeatureCollection',features:allPoints.filter(pt=>ids.has(pt.site.id)).map(pt=>{
+  const {directions,...marker}=markerProperties(pt,db.comparison_issues);
+  if(marker.windKnown&&!windImages.has(marker.windIcon))windImages.set(marker.windIcon,windImage(directions));
+  return {type:'Feature',id:pt.id,geometry:{type:'Point',coordinates:[pt.lon,pt.lat]},properties:{siteId:pt.site.id,pointId:pt.id,name:pt.name,category:prio(pt.site),...marker,selected:selected?.id===pt.id?1:0}};
+ })};
 }
+function restoreWindImages(){for(const [id,data] of windImages)if(!map.hasImage(id))map.addImage(id,data,{pixelRatio:2});}
 function addLayers(){
  if(!map||!map.getStyle?.())return;
+ restoreWindImages();
  if(!map.getSource('launches'))map.addSource('launches',{type:'geojson',data:geojson,cluster:true,clusterMaxZoom:15,clusterRadius:37});
  const layers=[
+  {id:'launch-wind',type:'symbol',source:'launches',filter:['all',['!',['has','point_count']],['==',['get','windKnown'],true]],layout:{'icon-image':['get','windIcon'],'icon-size':['interpolate',['linear'],['zoom'],8,.85,11,1,15,1.15],'icon-rotation-alignment':'map','icon-pitch-alignment':'map','icon-allow-overlap':true,'icon-ignore-placement':true}},
   {id:'cluster-outer',type:'circle',source:'launches',filter:['has','point_count'],paint:{'circle-color':'#204a48','circle-opacity':.96,'circle-radius':['step',['get','point_count'],20,4,23,9,26],'circle-stroke-color':'#ffffff','circle-stroke-width':3,'circle-stroke-opacity':.98}},
   {id:'cluster-count',type:'symbol',source:'launches',filter:['has','point_count'],layout:{'text-field':['get','point_count_abbreviated'],'text-font':['Noto Sans Bold'],'text-size':12,'text-allow-overlap':true},paint:{'text-color':'#ffffff'}},
-  {id:'unclustered',type:'circle',source:'launches',filter:['!',['has','point_count']],paint:{'circle-radius':['interpolate',['linear'],['zoom'],8,11,11,14,15,17],'circle-color':['match',['get','category'],'A',colors.A,'B',colors.B,'C',colors.C,colors.D],'circle-stroke-width':['case',['==',['get','selected'],1],5,3],'circle-stroke-color':['case',['==',['get','selected'],1],'#123a37','#ffffff'],'circle-opacity':.98}},
-  {id:'unclustered-label',type:'symbol',source:'launches',filter:['!',['has','point_count']],layout:{'text-field':['get','category'],'text-font':['Noto Sans Bold'],'text-size':['interpolate',['linear'],['zoom'],8,10,13,12],'text-allow-overlap':true,'text-ignore-placement':true},paint:{'text-color':'#ffffff'}}
+  {id:'selection-ring',type:'circle',source:'launches',filter:['all',['!',['has','point_count']],['==',['get','selected'],1]],paint:{'circle-radius':['interpolate',['linear'],['zoom'],8,16,11,18,15,20],'circle-color':'#ffffff','circle-stroke-color':'#172b28','circle-stroke-width':1.5}},
+  {id:'unclustered',type:'circle',source:'launches',filter:['!',['has','point_count']],paint:{'circle-radius':['interpolate',['linear'],['zoom'],8,11,11,13,15,15],'circle-color':['match',['get','difficulty'],'Leicht',DIFFICULTY_COLORS.Leicht,'Mittel',DIFFICULTY_COLORS.Mittel,'Schwer',DIFFICULTY_COLORS.Schwer,DIFFICULTY_COLORS.Unbekannt],'circle-stroke-width':2,'circle-stroke-color':'#172b28','circle-opacity':1}},
+  {id:'unclustered-label',type:'symbol',source:'launches',filter:['!',['has','point_count']],layout:{'text-field':['get','category'],'text-font':['Noto Sans Bold'],'text-size':['interpolate',['linear'],['zoom'],8,11,13,13],'text-allow-overlap':true,'text-ignore-placement':true},paint:{'text-color':'#142824'}}
  ];
  for(const layer of layers)if(!map.getLayer(layer.id))map.addLayer(layer);
 }
-function syncMap(){if(!db)return;geojson=pointsAsGeoJSON(visible);if(map&&map.getSource('launches'))map.getSource('launches').setData(geojson);}
+function syncMap(){if(!db)return;geojson=pointsAsGeoJSON(visible);if(map&&map.getSource('launches')){restoreWindImages();map.getSource('launches').setData(geojson);}}
 function rowsHTML(rows){return rows.map(r=>`<button type="button" class="site-row ${selected?.site.id===r.id?'active':''}" data-id="${r.id}"><span class="priority p-${prio(r)}">${prio(r)}</span><span style="flex:1;min-width:0"><span class="row-title">${esc(r.Startplatz)}</span><span class="row-sub">${labelAltitude(r['Höhe m'])} · Startwind ${esc(r.Startwind)} · ${esc(r.loc_class)}</span>${state.weather?`<span class="row-weather"><span class="suit ${suitClass(suit(r,state.weather))}">${esc(suit(r,state.weather))}</span></span>`:''}</span><span class="row-arrow">›</span></button>`).join('');}
 function updateList(){
  visible=sortAndFilter(db.sites,state);

@@ -79,3 +79,7 @@ Die lokale Anwendung wurde mit echtem MapLibre und Live-Kartendiensten in Chromi
 Die öffentliche Pages-Adresse ist in der neu konfigurierten Prüfumgebung erreichbar. Verifiziert gegen `main` bei `1f601cbb75e4a6c550e55ac5b84faa53cbf7ac73`: acht veröffentlichte Dateien stimmen bytegenau überein, alle 42 direkten Chromium-/SwiftShader-WebGL-Prüfungen und alle 18 Regressionstests bestehen. Geprüft wurden die drei Live-Kartenstile, wiederholte/schnelle Wechsel, echte Marker-/Cluster-Klicks, beide Schwengimatt-Positionen, Filter, Zoom/Verschieben/Einpassen, Tablet-/Telefonlayouts und der Wechsel von der Kompassansicht zur Karte. CI und Pages-Deployment für diesen Stand waren erfolgreich; die abschliessenden Nachweise zur Dokumentations-PR stehen in deren GitHub-Beschreibung.
 
 Details und Grenzen: WEBGL_ACCEPTANCE.md und RELEASE_VERIFICATION.md. Kein nativer iPhone-/Safari-Test, kein Hardware-Leistungstest und keine Windows-Edge-Abnahme. Datensatz und Quellenunsicherheiten bleiben unverändert.
+
+## Neue Kartenmarker — Feature-Kandidat
+
+Auf `feature/informative-map-markers` zeigt die Kreisfarbe die kanonische Schwierigkeit (grün/gelb/orange), der Buchstabe A–D die persönliche Priorität und ein oranger Fächer die Herkunft des Startwinds. Ungeklärte Richtungen erhalten keinen Fächer. Die aufklappbare Kartenlegende erklärt diese Trennung. Datensatz und Kartendienste bleiben unverändert. Dieser Kandidat ist noch nicht veröffentlicht; Design und Prüfnachweise stehen in MARKER_FEATURE.md.

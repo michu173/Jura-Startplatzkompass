@@ -5,11 +5,11 @@ const points=app=>app.map.getSource('launches').data.features;
 
 test('startup and repeated style swaps restore all points and layers without idle',async()=>{
  const app=await boot();assert(app.element('fit').disabled);app.completeStyle();
- assert.equal(points(app).length,30);assert.equal(app.map.layers.size,4);assert(!app.element('fit').disabled);
+ assert.equal(points(app).length,30);assert.equal(app.map.layers.size,6);assert(!app.element('fit').disabled);
  for(const style of ['positron','swisstopo','liberty','positron','liberty']){
   app.styles.find(b=>b.dataset.style===style).dispatch('click');
   assert.equal(app.map.swaps.at(-1).options.diff,false);assert(app.element('fit').disabled);
-  app.completeStyle();assert.equal(points(app).length,30);assert.equal(app.map.layers.size,4);assert(!app.element('fit').disabled);
+  app.completeStyle();assert.equal(points(app).length,30);assert.equal(app.map.layers.size,6);assert(!app.element('fit').disabled);
  }
  assert.equal(app.map.camera.filter(x=>x[0]==='fit').length,1,'style swaps preserve camera instead of refitting');
 });
@@ -49,7 +49,7 @@ test('rapid swaps and missing layers cannot cause invalid map queries',async()=>
  const app=await boot();app.completeStyle();app.styles[1].dispatch('click');app.styles[2].dispatch('click');
  assert.doesNotThrow(()=>app.map.emit('click',{point:{}}));app.completeStyle();assert.equal(points(app).length,30);
  app.map.layers.delete('unclustered');assert.doesNotThrow(()=>app.map.emit('mousemove',{point:{}}));assert.doesNotThrow(()=>app.map.emit('click',{point:{}}));
- app.completeStyle();assert.equal(app.map.layers.size,4);
+ app.completeStyle();assert.equal(app.map.layers.size,6);
 });
 
 test('old cluster expansion is ignored after a style swap',async()=>{
