@@ -1,5 +1,5 @@
 import {loadData,esc,el,matchWeatherChoices,sortAndFilter,prio,suit,suitClass,detailHTML,sitePoints,renderError,labelAltitude,DEFAULT_FILTERS,filtersFromSearch,writeFilters} from './common.js?v=20261021-1';
-import {DIFFICULTY_COLORS,markerProperties,windImage} from './map-markers.js?v=20261021-1';
+import {DIFFICULTY_COLORS,markerProperties,windImage} from './map-markers.js?v=20261021-2';
 const styles={
  liberty:'https://tiles.openfreemap.org/styles/liberty',
  positron:'https://tiles.openfreemap.org/styles/positron',
