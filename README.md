@@ -71,3 +71,9 @@ Node.js ab Version 20: `npm test`. Es werden keine npm-Abhängigkeiten installie
 Browser-Caches: CSS, beide Einstiegsmodule und deren gemeinsamer Modulimport tragen die Freigabekennung `20261021-1`. Bei späteren Änderungen alle betroffenen Referenzen konsistent aktualisieren. Originale Datenunsicherheiten stehen in DATA_SOURCES.md; eine strukturell gültige Datei ist keine fliegerische Startfreigabe.
 
 Die GitHub-Actions-Konfiguration `.github/workflows/tests.yml` führt `npm test` auf Node.js 22 bei Pull Requests und Änderungen an `main` aus. Sie benötigt nur Lesezugriff auf den Repository-Inhalt, keine Secrets und keine npm-Installation.
+
+## WebGL-Prüfung — Fortsetzung vom 21. Oktober 2026
+
+Die lokale Anwendung wurde mit echtem MapLibre und Live-Kartendiensten in Chromium 154 / SwiftShader (Software-WebGL 2) geprüft: alle drei Kartenstile, wiederholte/schnelle Wechsel, Marker/Cluster, beide Schwengimatt-Positionen, Filter, Zoom/Verschieben/Einpassen und 390/768/1440-Pixel-Layouts funktionieren. Die Markerbeschriftung verwendet nun `Noto Sans Bold` desselben Anbieters; der bisherige Fontaufruf lieferte HTTP 404. Der Kartenmodul-Verweis trägt deshalb `20261021-2`; unveränderte CSS-, Kompass- und gemeinsame Modulverweise behalten `20261021-1`.
+
+Details und Grenzen: WEBGL_ACCEPTANCE.md. Kein nativer iPhone-/Safari-Test und kein Hardware-Leistungstest. Die öffentliche Pages-Adresse ist in dieser Prüfumgebung netzwerkseitig gesperrt; die vorgeschlagene Korrektur benötigt nach Merge/Deployment noch eine erneute Prüfung der veröffentlichten Dateien und Karte. Datensatz und Quellenunsicherheiten bleiben unverändert.

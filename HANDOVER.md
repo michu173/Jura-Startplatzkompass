@@ -1,3 +1,11 @@
+# Latest continuation — WebGL acceptance, 21 October 2026
+
+Audited `main` remains at `f1da3c914693d2e3f81a4ce26fa4ba289c3bce87`. Actual MapLibre rendering and interaction were checked on the local checkout with live map providers in Chromium 154 / SwiftShader WebGL 2. All three basemaps, repeated/rapid switching, real marker/cluster clicks, filters, zoom/pan/fit, both Schwengimatt variants and phone/tablet viewports passed. See WEBGL_ACCEPTANCE.md for method, results and limits.
+
+A small runtime correction uses the existing provider's `Noto Sans Bold` for both marker symbol layers, replacing a font stack that returned HTTP 404. Only the map entry-module URL advances to `20261021-2`; unchanged CSS, compass module and shared imports remain `20261021-1`. Dataset SHA-256 remains unchanged. The existing 18 regression tests pass.
+
+These checks used actual software WebGL on localhost, not API doubles. The public Pages hostname is blocked by this environment's network policy, so fresh published-file verification remains outstanding. Native iPhone Safari gestures/safe areas, hardware rendering/performance and Windows Edge acceptance still need devices. The correction is proposed on a feature branch; this task does not merge or deploy it. Earlier release records below remain historical evidence.
+
 # Stabilisation release — 21 October 2026
 
 Audited baseline: `main` at `dc238574e687634afd2732c65c045415b9ea3cc2`. PR #1 from `fix/stabilise-20261021` was merged as `a7261a0199b7a46087a610bb1323fe2f36054110`. The published release, including the manual responsive viewer, was verified at `ad655a0f3b2e90e5ce614a2d60658b572dc7c30f`. The data file is byte-for-byte unchanged. Historical handover statements below describe earlier snapshots and do not override this release record.
