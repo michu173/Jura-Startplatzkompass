@@ -1,3 +1,21 @@
+# Stabilisation checkpoint — 21 October 2026
+
+Authoritative baseline: `main` at `dc238574e687634afd2732c65c045415b9ea3cc2`. Core fixes are isolated on `fix/stabilise-20261021`; they are not yet deployed. The data file is byte-for-byte unchanged. Historical handover statements below describe earlier snapshots and do not override this checkpoint.
+
+## Completed on the feature branch
+
+Shared validated URL filters/defaults; safe coordinate mapping without variant-ID shifts; validated/time-limited JSON loading; visible canonical difficulty; selectable existing launch variants; dynamic visible counts; tablet filter visibility and minor responsive/readability fixes. Map loading has timeout/retry states, guarded layer queries, stale cluster-response protection, and disabled controls when unusable. Map errors distinguish an unusable style/launch source from non-blocking tile failures. Full style reload and idempotent overlay restoration are retained. Topo CH now explicitly declares the existing OpenFreeMap font provider for marker labels. Mobile detail panels manage focus, background inertness and scroll locking. Source history, keys, IDs, source disagreements and all data values are preserved.
+
+## Verification and release boundary
+
+18 dependency-free automated tests pass, including all 360 filter combinations, all current records/positions/sections, repeated/rapid style switches, filters/selection, both Schwengimatt variants, fallback/error recovery and mobile keyboard logic. Tests use actual modules with DOM/MapLibre API doubles: they are NOT visual WebGL or real-device acceptance. Existing zero-height map sizing is protected by a source regression check. No new CI workflow has been installed at this checkpoint.
+
+The next bounded phase is browser/release verification, review of the feature-branch PR, merge and GitHub Pages parity/deployment checks. Do not mark the entire stabilisation task complete or claim live visual verification at this checkpoint. Previous cloud-browser sessions lacked WebGL. The connector cannot read Pages settings directly; use allowed workflow records and published-file parity instead. See FILES.md, DATA_SOURCES.md and MISSING.md for current inventory and unresolved evidence.
+
+Budget: user last reported 58% remaining; actual usage is not observable. Pause after this core-fix checkpoint for a fresh allowance reading before release work. Do not estimate percentages from token counts.
+
+## Earlier handover (14 October 2026)
+
 # HANDOVER — current Work development status
 
 Updated: 14 October 2026. Development continues in the existing Paragliding Project and Work conversation. The user works exclusively through GitHub Pages and does not maintain a local clone. Apply future fixes to the GitHub repository and check the Pages deployment; local-server instructions are optional developer instructions.

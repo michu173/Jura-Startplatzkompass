@@ -53,3 +53,21 @@ MapLibre ergänzt am Kartencontainer die Klasse `maplibregl-map`. Deren `positio
 ## Startplatzmarker beim Kartenwechsel
 
 MapLibre kann beim standardmässigen Stil-Diff die zusätzlichen Startplatzlayer entfernen, ohne ein neues `style.load` auszulösen. Der Kartenwechsel verwendet deshalb nun `setStyle(..., {diff: false})`. Nach jedem `style.load` werden die Startplatzquelle und alle vier Marker-/Clusterlayer wiederhergestellt und mit den aktuellen Filtern sowie der Auswahl synchronisiert. Die Karte wird danach sofort wieder bedienbar; sie wartet dafür nicht mehr auf `idle`. Fehlende Layer werden auch dann ergänzt, wenn die Quelle bereits besteht. Wiederholte und schnelle Wechsel sowie Filter und Auswahl wurden mit einem Ereignis-Regressionscheck geprüft.
+
+## Stabilisierung — 21. Oktober 2026 (Feature-Branch)
+
+Die Website bleibt statisches HTML/CSS/JavaScript mit derselben JSON-Datenquelle. Kein Build und keine Installation sind zum Betrieb auf GitHub Pages nötig. Die Stabilisierung verändert keine Startplatzdaten.
+
+- Gemeinsame Filter-Grundwerte; Filter bleiben beim Wechsel zwischen Liste und Karte über die URL erhalten. Die Kartenliste zeigt dieselbe Sortierung, wenn sie aus der Kompassansicht übernommen wird.
+- Daten-/Koordinatenprüfung, Zeitlimits, verständliche Lade-/Fehlerzustände und erneuter Versuch desselben Kartenstils; ein einzelner Kachelfehler verdeckt keine nutzbare Karte.
+- Marker und Auswahl bleiben beim Kartenwechsel erhalten. Topo CH nutzt denselben externen OpenFreeMap-Schriftdienst für Markerbeschriftungen.
+- Beide gespeicherten Schwengimatt-Positionen sind im Detailpanel auswählbar. Kanonische Schwierigkeit wird auch in der Kompassansicht ausdrücklich angezeigt.
+- Tastaturfokus und modaler Hintergrundschutz auf kleinen Bildschirmen; Bedienbarkeit der Filter auf Tabletbreiten; dynamische sichtbare Datensatz-Zähler.
+
+### Regressionstests
+
+Node.js ab Version 20: `npm test`. Es werden keine npm-Abhängigkeiten installiert. Die Tests prüfen Datensatz, 360 Filterkombinationen, Anzeige, URL-Zustand, Kartenwechsel, Varianten, Fokus und Fehlerpfade. Die MapLibre-/DOM-Doubles führen die echten Anwendungsmodule aus, rendern aber weder WebGL noch native Touch-Gesten. Browser-Abnahme und Live-Verifikation bleiben eigene Freigabeschritte. Im Core-Fix-Checkpoint ist die Änderung noch nicht mit `main` zusammengeführt.
+
+Browser-Caches: CSS, beide Einstiegsmodule und deren gemeinsamer Modulimport tragen die Freigabekennung `20261021-1`. Bei späteren Änderungen alle betroffenen Referenzen konsistent aktualisieren. Originale Datenunsicherheiten stehen in DATA_SOURCES.md; eine strukturell gültige Datei ist keine fliegerische Startfreigabe.
+
+Die GitHub-Actions-Konfiguration `.github/workflows/tests.yml` führt `npm test` auf Node.js 22 bei Pull Requests und Änderungen an `main` aus. Sie benötigt nur Lesezugriff auf den Repository-Inhalt, keine Secrets und keine npm-Installation.

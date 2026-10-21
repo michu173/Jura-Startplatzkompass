@@ -1,5 +1,5 @@
-import {loadData,esc,el,matchWeatherChoices,sortAndFilter,prio,badge,labelAltitude,detailHTML,renderError} from './common.js';
-const state={query:'',weather:'',priority:'',access:'',onlySuitable:true,sort:'priority'};
+import {loadData,esc,el,matchWeatherChoices,sortAndFilter,prio,badge,labelAltitude,detailHTML,renderError,DEFAULT_FILTERS,filtersFromSearch,writeFilters,sitePoints} from './common.js?v=20261021-1';
+const state=filtersFromSearch(window.location.search);
 let data;
 function cardHTML(r){
  const abbrev=r.aggregation_abschnitte?.['Start und Gelände']||r['Startplatz / Schwierigkeit']||'';
@@ -12,10 +12,12 @@ function render(){if(!data)return;
  el('cards').querySelectorAll('.site-card').forEach(d=>{if(previouslyOpen.has(d.dataset.id))d.open=true;});
  el('count').textContent=`(${rows.length} / ${data.sites.length})`;
  const c=data.conditions?.[state.weather];el('weather-info').textContent=state.weather?(c?.[2]||'Standortabhängige Eignung; Wind am Start gesondert prüfen.'):'Eine Wetterlage auswählen, um die Startplätze zu bewerten.';
- el('expand').textContent=[...el('cards').querySelectorAll('.site-card')].every(d=>d.open)?'Alle schliessen':'Alle öffnen';
+ updateExpand();writeFilters(state);
 }
+function updateExpand(){const cards=[...el('cards').querySelectorAll('.site-card')];el('expand').disabled=!cards.length;el('expand').textContent=cards.length&&cards.every(d=>d.open)?'Alle schliessen':'Alle öffnen';}
+el('cards').addEventListener('toggle',updateExpand,true);
 function onChange(){state.query=el('search').value;state.weather=el('weather').value;state.priority=el('priority').value;state.access=el('access').value;state.onlySuitable=el('onlySuitable').checked;state.sort=el('sort').value;render();}
 for(const k of ['search','weather','priority','access','onlySuitable','sort'])el(k).addEventListener('input',onChange);
-el('clear').addEventListener('click',()=>{for(const k of ['search','weather','priority','access'])el(k).value='';el('onlySuitable').checked=true;el('sort').value='priority';onChange();});
+el('clear').addEventListener('click',()=>{for(const k of ['search','weather','priority','access'])el(k).value='';el('onlySuitable').checked=DEFAULT_FILTERS.onlySuitable;el('sort').value=DEFAULT_FILTERS.sort;onChange();});
 el('expand').addEventListener('click',()=>{const cards=[...document.querySelectorAll('.site-card')];const open=cards.some(d=>!d.open);cards.forEach(d=>d.open=open);el('expand').textContent=open?'Alle schliessen':'Alle öffnen';});
-try{data=await loadData();matchWeatherChoices(el('weather'),data.weatherkeys||[]);render();}catch(e){console.error(e);renderError(el('cards'),e.message);}
+try{data=await loadData();matchWeatherChoices(el('weather'),data.weatherkeys||[]);if(!data.weatherkeys.includes(state.weather))state.weather='';for(const [id,key] of Object.entries({search:'query',weather:'weather',priority:'priority',access:'access',sort:'sort'}))el(id).value=state[key];el('onlySuitable').checked=state.onlySuitable;document.querySelectorAll('[data-site-total]').forEach(e=>e.textContent=data.sites.length);document.querySelectorAll('[data-point-total]').forEach(e=>e.textContent=data.sites.flatMap(sitePoints).length);render();}catch(e){console.error(e);renderError(el('cards'),e.message);el('expand').disabled=true;}
