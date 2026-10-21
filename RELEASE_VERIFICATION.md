@@ -1,5 +1,7 @@
 # Release verification — 21 October 2026
 
+Later continuation: WEBGL_ACCEPTANCE.md records actual local Chromium/SwiftShader rendering with live map providers and a proposed marker-font correction. The release evidence below describes the earlier published release; native devices and fresh publication verification remain separate.
+
 Website: https://michu173.github.io/Jura-Startplatzkompass/
 
 The application remains static HTML/CSS and native JavaScript modules, with `daten/startplaetze.json` as its only database. There is no server, user account, build requirement or runtime package installation. GitHub Pages publishes the repository root; optional developer checks use Node >=20 and `npm test`.
