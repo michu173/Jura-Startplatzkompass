@@ -1,0 +1,230 @@
+{
+  "baseline_main": "0aa1751777db8c7463a82a0c5bc503d647e2241b",
+  "runtime_commit": "451a9b4756e576688467a244b2cf8e22581cc535",
+  "request": "Always render individual launches; reveal launch-direction fans only at detail zoom.",
+  "fan_minzoom": 11.5,
+  "named_node_regression_tests": 22,
+  "browser_checks": 25,
+  "source_sha256": {
+    "index.html": "dfe196823aabca7adf5646d14ea6420241b0f106c00d868a170b0cc459003ef0",
+    "karte.html": "574d1b980ab9fe01cb12b952dc5e518a74f5f5a9dbf74ea3d2c4a48667f65d06",
+    "styles.css": "fd1c8c40c137a81bc8f3836160d36bf0a9a20d2a0bb742404f2d42fdb7c7228f",
+    "js/map.js": "fe2cc4a0f486ac26667e3acc9f4b5679a1ffd8e252577d01b4f37a82d1a0ee0c",
+    "js/map-markers.js": "6da999c958a796507cf3b4b990d68d501be37dfc8de5f90508b0aa230ce79c94",
+    "js/common.js": "e8f91e7996ae5699ef3aaaf4ecc737084981bf73d10b03eb3c79baf486c92c32",
+    "js/index.js": "eb90671d3632267abe91c9a7b02a61bbbe944b0c8c8e5004225ded055e826141",
+    "daten/startplaetze.json": "68e4e782fecb4b1e48c44b8fc8abcd95ab4868bf85275caaf1ed3de80c609c2a"
+  },
+  "method": "Local feature checkout, real Chromium/SwiftShader WebGL 2 and live providers; no native-device or published-feature acceptance.",
+  "result": {
+    "started": "2026-10-21T20:25:17.160Z",
+    "url": "http://127.0.0.1:8765/karte.html",
+    "checks": [
+      {
+        "name": "Initial fit renders 30 individual circles with priority letters, no grouping or fans",
+        "result": "pass"
+      },
+      {
+        "name": "positron at zoom 8: all 30 circles and no aggregate markers",
+        "result": "pass"
+      },
+      {
+        "name": "positron at zoom 11.49: fans remain hidden",
+        "result": "pass"
+      },
+      {
+        "name": "positron at zoom 11.5: direction fans appear",
+        "result": "pass"
+      },
+      {
+        "name": "positron zooming back out hides fans and restores all individual markers",
+        "result": "pass"
+      },
+      {
+        "name": "swisstopo at zoom 8: all 30 circles and no aggregate markers",
+        "result": "pass"
+      },
+      {
+        "name": "swisstopo at zoom 11.49: fans remain hidden",
+        "result": "pass"
+      },
+      {
+        "name": "swisstopo at zoom 11.5: direction fans appear",
+        "result": "pass"
+      },
+      {
+        "name": "swisstopo zooming back out hides fans and restores all individual markers",
+        "result": "pass"
+      },
+      {
+        "name": "liberty at zoom 8: all 30 circles and no aggregate markers",
+        "result": "pass"
+      },
+      {
+        "name": "liberty at zoom 11.49: fans remain hidden",
+        "result": "pass"
+      },
+      {
+        "name": "liberty at zoom 11.5: direction fans appear",
+        "result": "pass"
+      },
+      {
+        "name": "liberty zooming back out hides fans and restores all individual markers",
+        "result": "pass"
+      },
+      {
+        "name": "Real individual marker click selects a site without cluster zoom",
+        "result": "pass"
+      },
+      {
+        "name": "Priority A filters to four individual points",
+        "result": "pass"
+      },
+      {
+        "name": "Reset restores 30 individual markers and hides fans in overview",
+        "result": "pass"
+      },
+      {
+        "name": "Rapid style changes preserve the ungrouped overview",
+        "result": "pass"
+      },
+      {
+        "name": "Both Schwengimatt variants remain individual points when zoomed out",
+        "result": "pass"
+      },
+      {
+        "name": "Variant selection and fans remain correct at detail zoom",
+        "result": "pass"
+      },
+      {
+        "name": "tablet overview: all 30 circles with priority letters, no fans or horizontal overflow",
+        "result": "pass"
+      },
+      {
+        "name": "tablet detail zoom reveals fans",
+        "result": "pass"
+      },
+      {
+        "name": "phone overview: all 30 circles with priority letters, no fans or horizontal overflow",
+        "result": "pass"
+      },
+      {
+        "name": "phone detail zoom reveals fans",
+        "result": "pass"
+      },
+      {
+        "name": "Phone legend explains that fans appear on zooming in",
+        "result": "pass"
+      },
+      {
+        "name": "No uncaught JavaScript, MapLibre or application/map-resource failures",
+        "result": "pass"
+      }
+    ],
+    "pageErrors": [],
+    "mapErrors": [],
+    "httpErrors": [],
+    "failedRequests": [
+      {
+        "url": "https://tiles.openfreemap.org/styles/positron",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://tiles.openfreemap.org/styles/liberty",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://tiles.openfreemap.org/styles/positron",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://tiles.openfreemap.org/styles/positron",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://tiles.openfreemap.org/styles/liberty",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "url": "https://tiles.openfreemap.org/styles/positron",
+        "error": "net::ERR_ABORTED"
+      }
+    ],
+    "browser": "154.0.8037.57",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "overviewCounts": [
+      {
+        "zoom": 9.921079355276097,
+        "circles": 30,
+        "priorityLabels": 30
+      },
+      {
+        "zoom": 8,
+        "circles": 30,
+        "priorityLabels": 30
+      },
+      {
+        "zoom": 8,
+        "circles": 30,
+        "priorityLabels": 30
+      },
+      {
+        "zoom": 8,
+        "circles": 30,
+        "priorityLabels": 30
+      },
+      {
+        "zoom": 8,
+        "circles": 30,
+        "priorityLabels": 30
+      },
+      {
+        "zoom": 8,
+        "circles": 30,
+        "priorityLabels": 30
+      },
+      {
+        "zoom": 8,
+        "circles": 30,
+        "priorityLabels": 30
+      },
+      {
+        "zoom": 8,
+        "circles": 4,
+        "priorityLabels": 4
+      },
+      {
+        "zoom": 9.921079355276138,
+        "circles": 30,
+        "priorityLabels": 30
+      },
+      {
+        "zoom": 9.921079355276097,
+        "circles": 30,
+        "priorityLabels": 30
+      },
+      {
+        "zoom": 8,
+        "circles": 2,
+        "priorityLabels": 2
+      },
+      {
+        "zoom": 8.364246227738779,
+        "circles": 30,
+        "priorityLabels": 30
+      },
+      {
+        "zoom": 8.135977240065664,
+        "circles": 30,
+        "priorityLabels": 30
+      }
+    ],
+    "result": "pass",
+    "automationNotes": [
+      "Overview checks count every rendered circle ID; coincident identical priority letters may be coalesced by MapLibre at distant zoom.",
+      "After 16 passing checks, the rapid-style assertion ran before the source worker rendered. Added an explicit rendered-circle wait and resumed; no application change.",
+      "Resumed remaining responsive checks with the wind-center fixture restored; application code unchanged."
+    ],
+    "finished": "2026-10-21T20:30:08.254Z"
+  }
+}

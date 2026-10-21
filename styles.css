@@ -23,3 +23,16 @@ button:disabled{cursor:default;opacity:.55}summary:focus-visible{outline:3px sol
 .map-fallback{width:min(360px,calc(100% - 32px));overflow-wrap:anywhere}.variant-note button,.variant-note a{display:inline-block;margin:3px 0}.variant-note button[aria-pressed=true]{background:#e2f5e9;border-color:#77ad99}
 @media(max-width:750px){.topbar{flex-wrap:wrap;gap:10px}}
 @media(max-width:700px){body.map-page.details-open{overflow:hidden}.detail-scroll{padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}.map-status{left:10px;top:56px}}
+
+/* Difficulty, priority and wind use separate visual channels on the map. */
+.map-legend{display:block;max-width:min(355px,calc(100% - 34px));padding:4px 10px}
+.map-legend summary{display:flex;align-items:center;gap:7px;cursor:pointer;list-style:none;min-height:38px}
+.map-legend summary::-webkit-details-marker{display:none}
+.map-legend summary::after{content:'＋';margin-left:auto;font-size:15px}
+.map-legend[open] summary::after{content:'−'}
+.legend-example{width:32px;height:34px;flex:none;overflow:visible}
+.legend-content{padding:5px 1px 7px;font-size:11px;font-weight:500;line-height:1.5}
+.legend-content p{margin:7px 0 0}
+.legend-scale{display:flex;gap:7px;flex-wrap:wrap;font-weight:700}
+.legend-scale .legend-dot{width:11px;height:11px;border:1px solid #172b28;vertical-align:-1px}
+.difficulty-easy{background:#54b85f}.difficulty-medium{background:#f5d94c}.difficulty-hard{background:#f28b34}.difficulty-unknown{background:#c3ced0}

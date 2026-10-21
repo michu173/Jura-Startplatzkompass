@@ -7,6 +7,10 @@ Authority: the current GitHub branch and its commit history, not old handover ZI
 | `daten/startplaetze.json` | Sole authoritative dataset, including preserved source fields, IDs and launch variants |
 | `index.html`, `js/index.js` | Filtered compass/cards and expandable site details |
 | `karte.html`, `js/map.js` | Interactive map, layers, filters, controls and detail panel |
+| `js/map-markers.js` | Difficulty mapping, conservative launch-direction parsing and generated wind sprites |
+| `tests/map-markers.test.js` | Marker semantics, directional pixel geometry and sprite/layer lifecycle regressions |
+| `MARKER_FEATURE.md` | Marker candidate design, preservation guarantees and verification checkpoint |
+| `docs/marker-preview.jpg`, `docs/marker-detail-preview.jpg`, `docs/marker-verification.json`, `docs/marker-verification-initial.json` | Actual overview/detail screenshots and current/historical browser-check/source-hash evidence; not runtime data |
 | `js/common.js` | Dataset validation/loading, shared filters, coordinates and detail presentation |
 | `styles.css` | Shared existing design and responsive layouts |
 | `package.json` | Dependency-free Node test command; not a website build requirement |

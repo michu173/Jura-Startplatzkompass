@@ -1,3 +1,7 @@
+# Marker feature candidate — not yet published
+
+Work continues on `feature/informative-map-markers`, based on `0aa1751`. Circles encode canonical difficulty, their A–D letters encode personal priority, and orange fans encode stored launch-wind origins. All matching launches now stay individual at every zoom; direction fans appear only from zoom 11.5. All 22 named regressions and 25 focused actual Chromium/SwiftShader checks pass for this refinement; implementation is ready for PR review. See MARKER_FEATURE.md for the preview, evidence and remaining release steps. No other backlog feature or canonical data changes are included. The existing published release and its evidence remain below.
+
 # Published-site verification — 21 October 2026
 
 Verified the existing GitHub Pages deployment against `main` at `1f601cbb75e4a6c550e55ac5b84faa53cbf7ac73`. Remote `main` matched the expected SHA; PRs #2 and #3 were merged. CI run `39658687635` and Pages run `39658687484` succeeded for that SHA; the deploy log confirmed the existing production URL. HTTPS access now succeeds from the newly configured environment.

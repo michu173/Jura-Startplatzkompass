@@ -52,12 +52,15 @@ test('rapid swaps and missing layers cannot cause invalid map queries',async()=>
  app.completeStyle();assert.equal(app.map.layers.size,4);
 });
 
-test('old cluster expansion is ignored after a style swap',async()=>{
- const app=await boot();app.completeStyle();let resolve;
- app.map.getSource('launches').getClusterExpansionZoom=()=>new Promise(r=>{resolve=r;});
- app.map.hits={'cluster-outer':[{properties:{cluster_id:3},geometry:{coordinates:[7,47]}}]};
- app.map.emit('click',{point:{}});app.styles[1].dispatch('click');app.completeStyle();resolve(13);await Promise.resolve();await Promise.resolve();
- assert.equal(app.map.camera.filter(x=>x[0]==='ease').length,0);
+test('all launches remain individual and marker clicks select without cluster zoom',async()=>{
+ const app=await boot();app.completeStyle();
+ assert.equal(app.map.getSource('launches').cluster,false);
+ assert(!app.map.getLayer('cluster-outer'));assert(!app.map.getLayer('cluster-count'));
+ assert.equal(points(app).length,30);
+ app.map.hits={unclustered:[{properties:{pointId:'10-1'}}]};
+ app.map.emit('click',{point:{}});
+ assert.equal(points(app).find(f=>f.properties.selected).properties.pointId,'10-1');
+ assert.equal(app.map.camera.filter(x=>['ease','fly'].includes(x[0])).length,0);
 });
 
 test('mobile details trap focus, switch variants and restore focus on close',async()=>{
