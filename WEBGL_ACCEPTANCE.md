@@ -46,7 +46,7 @@ Dataset SHA-256 remains `68e4e782fecb4b1e48c44b8fc8abcd95ab4868bf85275caaf1ed3de
 
 - On real iPhone Safari: drag, pinch, cluster/site selection, detail-sheet scrolling, safe-area spacing and portrait/landscape changes. Viewport tests used desktop Chromium input, not an iPhone or Safari engine.
 - On hardware-backed browsers, including the intended Windows Edge: rendering and gesture/performance confirmation. SwiftShader timings are not device performance evidence.
-- After merge/deployment: confirm the Pages workflow and the published `js/map.js` / `karte.html` bytes, then check the public map in a WebGL-capable browser. This branch has not been merged or deployed by this acceptance task.
+- PR #2 was merged as `4f7ad0091ce17610908d9083f47203705bde5aba`; merge CI and Pages deployment succeeded (runs `39657941849` and `39657942132`). The merged runtime matches these tested files. Fresh published `js/map.js` / `karte.html` byte parity and public-browser checks remain blocked by this environment's hostname allowlist. See RELEASE_VERIFICATION.md for deployment evidence.
 - Operational-data uncertainties remain unchanged; see DATA_SOURCES.md.
 
 To repeat manually, open `karte.html` over HTTP(S), cycle Karte/Hell/Topo CH three times, click clusters and individual markers, search Schwengimatt and select both variants, zoom in to separate them, change filters/reset, then exercise zoom/pan/fit and rapid style switches. Repeat at phone/tablet widths. Check the browser Network/Console panels for glyph/tile errors and inspect marker letters/counts, not only background tiles.

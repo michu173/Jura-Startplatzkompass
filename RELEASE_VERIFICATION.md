@@ -1,8 +1,14 @@
 # Release verification — 21 October 2026
 
-Later continuation: WEBGL_ACCEPTANCE.md records actual local Chromium/SwiftShader rendering with live map providers and a proposed marker-font correction. The release evidence below describes the earlier published release; native devices and fresh publication verification remain separate.
+Later continuation: WEBGL_ACCEPTANCE.md records actual local Chromium/SwiftShader rendering with live map providers and the released marker-font correction. The release evidence below describes the earlier published release; native devices and fresh publication verification remain separate.
 
 Website: https://michu173.github.io/Jura-Startplatzkompass/
+
+## Current runtime release — PR #2
+
+PR https://github.com/michu173/Jura-Startplatzkompass/pull/2 was merged as `4f7ad0091ce17610908d9083f47203705bde5aba`. Its runtime files match the version exercised by the 40 actual Chromium/SwiftShader browser checks in WEBGL_ACCEPTANCE.md. All 18 regression tests passed again on the merged checkout; merge CI run `39657941849` succeeded. The canonical dataset hash remains unchanged.
+
+Pages deployment run https://github.com/michu173/Jura-Startplatzkompass/actions/runs/39657942132 succeeded for that exact merge SHA. Its deploy log reported success and the environment URL `https://michu173.github.io/Jura-Startplatzkompass/`. This verifies GitHub's deployment outcome, not a new public-browser check. Fresh public-file parity/browser checks remain blocked by the cloud environment's enforced hostname allowlist; the separate web-fetch tool also could not access the public URLs. Native iPhone Safari gestures/safe areas and hardware/Windows Edge testing remain unverified. No critical application failures were found in the tested paths. The later documentation-only follow-up does not alter the tested runtime.
 
 The application remains static HTML/CSS and native JavaScript modules, with `daten/startplaetze.json` as its only database. There is no server, user account, build requirement or runtime package installation. GitHub Pages publishes the repository root; optional developer checks use Node >=20 and `npm test`.
 
